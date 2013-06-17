@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QScopedPointer>
+
+class SGMDirectorySelector;
 
 namespace Ui {
 class MainWindow;
@@ -16,7 +19,9 @@ public:
     ~MainWindow();
     
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow* Ui;
+    QScopedPointer<SGMDirectorySelector> LeftDirectorySelector;
+    QScopedPointer<SGMDirectorySelector> RightDirectorySelector;
 };
 
 #endif // MAINWINDOW_H

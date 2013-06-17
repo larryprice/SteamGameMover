@@ -13,9 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+    SGMDirectorySelector.cpp \
+    SGMListItemModel.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    SGMDirectorySelector.h \
+    SGMListItemModel.h
 
 FORMS    += MainWindow.ui
 
