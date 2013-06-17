@@ -10,13 +10,13 @@ class QListView;
 class QPushButton;
 class QWidget;
 
-class SGMDirectorySelector : public QObject
+class SteamAppDirectorySelector : public QObject
 {
     Q_OBJECT
 
 public:
-    SGMDirectorySelector(QLineEdit* text, QListView* list, QWidget *parent);
-    virtual ~SGMDirectorySelector();
+    SteamAppDirectorySelector(QLineEdit* text, QListView* list, QWidget *parent);
+    virtual ~SteamAppDirectorySelector();
 
 public slots:
     void OpenFileDialog();

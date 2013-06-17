@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-#include "SGMDirectorySelector.h"
+#include "SteamAppDirectorySelector.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,10 +10,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     Ui->setupUi(this);
 
-    LeftDirectorySelector.reset(new SGMDirectorySelector(Ui->SteamAppLocationLeftText,
+    LeftDirectorySelector.reset(new SteamAppDirectorySelector(Ui->SteamAppLocationLeftText,
                                                          Ui->AppsLeftListBox,
                                                          this));
-    RightDirectorySelector.reset(new SGMDirectorySelector(Ui->SteamAppLocationRightText,
+    RightDirectorySelector.reset(new SteamAppDirectorySelector(Ui->SteamAppLocationRightText,
                                                           Ui->AppsRightListBox,
                                                           this));
 

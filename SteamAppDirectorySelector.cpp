@@ -1,4 +1,4 @@
-#include "SGMDirectorySelector.h"
+#include "SteamAppDirectorySelector.h"
 #include "SteamAppListItem.h"
 #include "SteamAppListModel.h"
 #include <QFileDialog>
@@ -7,21 +7,21 @@
 #include <QPushButton>
 #include <QWidget>
 
-SGMDirectorySelector::SGMDirectorySelector(QLineEdit* text, QListView* list, QWidget* parent)
+SteamAppDirectorySelector::SteamAppDirectorySelector(QLineEdit* text, QListView* list, QWidget* parent)
     : Parent(parent),
       AppDir(text),
       ListView(list)
 {
 }
 
-SGMDirectorySelector::~SGMDirectorySelector()
+SteamAppDirectorySelector::~SteamAppDirectorySelector()
 {
     Parent = NULL;
     AppDir = NULL;
     ListView = NULL;
 }
 
-void SGMDirectorySelector::OpenFileDialog()
+void SteamAppDirectorySelector::OpenFileDialog()
 {
     if (NULL != AppDir && NULL != ListView)
     {
@@ -33,7 +33,7 @@ void SGMDirectorySelector::OpenFileDialog()
     }
 }
 
-void SGMDirectorySelector::Refresh()
+void SteamAppDirectorySelector::Refresh()
 {
 //    QStringList gameList = GetGameList();
 //    QAbstractItemModel* itemModel = ListView->model();
@@ -45,7 +45,7 @@ void SGMDirectorySelector::Refresh()
     ListView->setModel(new SteamAppListModel(GetGameList(), Parent));
 }
 
-QList<QSharedPointer<SteamAppListItem> > SGMDirectorySelector::GetGameList()
+QList<QSharedPointer<SteamAppListItem> > SteamAppDirectorySelector::GetGameList()
 {
     QList<QSharedPointer<SteamAppListItem> > gameList;
     if (NULL != AppDir && !AppDir->text().isEmpty())

@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QScopedPointer>
 
-class SGMDirectorySelector;
+class SteamAppDirectorySelector;
 
 namespace Ui {
 class MainWindow;
@@ -20,8 +20,8 @@ public:
     
 private:
     Ui::MainWindow* Ui;
-    QScopedPointer<SGMDirectorySelector> LeftDirectorySelector;
-    QScopedPointer<SGMDirectorySelector> RightDirectorySelector;
+    QScopedPointer<SteamAppDirectorySelector> LeftDirectorySelector;
+    QScopedPointer<SteamAppDirectorySelector> RightDirectorySelector;
 };
 
 #endif // MAINWINDOW_H
