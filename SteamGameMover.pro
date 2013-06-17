@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     SGMDirectorySelector.cpp \
-    SGMListItemModel.cpp
+    SteamAppListModel.cpp \
+    SteamAppListItem.cpp
 
 HEADERS  += MainWindow.h \
     SGMDirectorySelector.h \
-    SGMListItemModel.h
+    SteamAppListModel.h \
+    SteamAppListItem.h
 
 FORMS    += MainWindow.ui
 

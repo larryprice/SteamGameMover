@@ -2,7 +2,8 @@
 #define SGM_DIRECTORY_SELECTOR_H
 
 #include <QObject>
-#include <QSharedDataPointer>
+
+class SteamAppListItem;
 
 class QLineEdit;
 class QListView;
@@ -22,7 +23,7 @@ public slots:
     void Refresh();
 
 private:
-    QStringList GetGameList();
+    QList<QSharedPointer<SteamAppListItem> > GetGameList();
 
     QWidget* Parent;
     QLineEdit* AppDir;

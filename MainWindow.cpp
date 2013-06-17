@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "SGMDirectorySelector.h"
-#include "SGMListItemModel.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

@@ -1,5 +1,6 @@
 #include "SGMDirectorySelector.h"
-#include "SGMListItemModel.h"
+#include "SteamAppListItem.h"
+#include "SteamAppListModel.h"
 #include <QFileDialog>
 #include <QLineEdit>
 #include <QListView>
@@ -34,16 +35,26 @@ void SGMDirectorySelector::OpenFileDialog()
 
 void SGMDirectorySelector::Refresh()
 {
-    ListView->setModel(new SGMListItemModel(GetGameList(), Parent));
+//    QStringList gameList = GetGameList();
+//    QAbstractItemModel* itemModel = ListView->model();
+//    for (int i = 0; i < itemModel->rowCount(); i++)
+//    {
+//        itemModel->
+//    }
+
+    ListView->setModel(new SteamAppListModel(GetGameList(), Parent));
 }
 
-QStringList SGMDirectorySelector::GetGameList()
+QList<QSharedPointer<SteamAppListItem> > SGMDirectorySelector::GetGameList()
 {
-    QStringList gameList;
-    if (NULL != AppDir)
+    QList<QSharedPointer<SteamAppListItem> > gameList;
+    if (NULL != AppDir && !AppDir->text().isEmpty())
     {
         QDir appDir(AppDir->text());
-        gameList = appDir.entryList(QStringList("appmanifest_*.acf"));
+        foreach(QString appName, appDir.entryList(QStringList("appmanifest_*.acf")))
+        {
+            gameList << QSharedPointer<SteamAppListItem>(new SteamAppListItem(appName));
+        }
     }
     return gameList;
 }
