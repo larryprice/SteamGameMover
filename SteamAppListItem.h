@@ -7,11 +7,12 @@ class SteamAppListItem : public QObject
 {
     Q_OBJECT
 public:
-    SteamAppListItem(QString name, QObject *parent = 0);
+    SteamAppListItem(QString manifestName, QObject *parent = 0);
 
     QString GetName() const;
 
 private:
+    QString AppManifestFilePath;
     QString Name;
 };
 

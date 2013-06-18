@@ -35,13 +35,6 @@ void SteamAppDirectorySelector::OpenFileDialog()
 
 void SteamAppDirectorySelector::Refresh()
 {
-//    QStringList gameList = GetGameList();
-//    QAbstractItemModel* itemModel = ListView->model();
-//    for (int i = 0; i < itemModel->rowCount(); i++)
-//    {
-//        itemModel->
-//    }
-
     ListView->setModel(new SteamAppListModel(GetGameList(), Parent));
 }
 
@@ -51,9 +44,9 @@ QList<QSharedPointer<SteamAppListItem> > SteamAppDirectorySelector::GetGameList(
     if (NULL != AppDir && !AppDir->text().isEmpty())
     {
         QDir appDir(AppDir->text());
-        foreach(QString appName, appDir.entryList(QStringList("appmanifest_*.acf")))
+        foreach(const QString& appName, appDir.entryList(QStringList("appmanifest_*.acf")))
         {
-            gameList << QSharedPointer<SteamAppListItem>(new SteamAppListItem(appName));
+            gameList << QSharedPointer<SteamAppListItem>(new SteamAppListItem(QString("%1/%2").arg(appDir.absolutePath()).arg(appName)));
         }
     }
     return gameList;
