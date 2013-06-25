@@ -25,13 +25,14 @@ QString SteamAppManifestParser::GetAppName()
                 QStringList lines = manifestStream.readLine().simplified().split("\" \"");
                 if (lines.count() == 2 && lines.first() == "\"name")
                 {
-                    AppName.reset(new QString(lines.last()));
-                    AppName->chop(1);
+                    AppName = lines.last();
+                    AppName.chop(1);
+                    break;
                 }
             }
             manifest.close();
         }
     }
 
-    return AppName.isNull() ? "" : *AppName;
+    return AppName;
 }

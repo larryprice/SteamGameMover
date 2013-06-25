@@ -14,7 +14,7 @@ public:
 private:
     QString AppManifestFilePath;
 
-    QSharedPointer<QString> AppName;
+    QString AppName;
 };
 
 #endif // STEAM_APP_MANIFEST_PARSER_H
