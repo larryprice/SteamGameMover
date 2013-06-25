@@ -1,0 +1,27 @@
+"AppState"
+{
+	"appID"		"225260"
+	"Universe"		"1"
+	"StateFlags"		"4"
+	"installdir"		"BrutalLegend"
+	"LastUpdated"		"1371255911"
+	"UpdateResult"		"0"
+	"SizeOnDisk"		"8998762563"
+	"buildid"		"81337"
+	"UserID"		"76561198038485130"
+	"BytesToDownload"		"12326704"
+	"BytesDownloaded"		"12326704"
+	"UserConfig"
+	{
+		"name"		"Brütal Legend"
+		"GameID"		"225260"
+		"Installed"		"1"
+		"appinstalldir"		"/home/lrp/.local/share/Steam/SteamApps/common/BrutalLegend"
+		"Language"		"english"
+	}
+	"MountedDepots"
+	{
+		"225274"		"544543290352629252"
+		"225275"		"1273826260142880404"
+	}
+}
