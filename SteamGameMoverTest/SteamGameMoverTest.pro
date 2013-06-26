@@ -1,3 +1,5 @@
+SOURCE_UNDER_TEST = ../SteamGameMover/
+
 QT += testlib
 QT -= gui
 
@@ -14,3 +16,11 @@ SOURCES += \
 
 HEADERS += \
     AutoTest.h
+
+SOURCES += \
+    $${SOURCE_UNDER_TEST}SteamAppManifestParser.cpp \
+    $${SOURCE_UNDER_TEST}SteamAppListItem.cpp
+
+HEADERS += \
+    $${SOURCE_UNDER_TEST}SteamAppManifestParser.h \
+    $${SOURCE_UNDER_TEST}SteamAppListItem.h
