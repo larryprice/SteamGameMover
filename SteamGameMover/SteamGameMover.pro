@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     SteamAppListModel.cpp \
     SteamAppListItem.cpp \
     SteamAppDirectorySelector.cpp \
-    SteamAppManifestParser.cpp
+    SteamAppManifestParser.cpp \
+    SteamAppDataTransferer.cpp
 
 HEADERS  += MainWindow.h \
     SteamAppListModel.h \
     SteamAppListItem.h \
     SteamAppDirectorySelector.h \
-    SteamAppManifestParser.h
+    SteamAppManifestParser.h \
+    SteamAppDataTransferer.h
 
 FORMS    += MainWindow.ui
 

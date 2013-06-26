@@ -2,7 +2,7 @@
 #define STEAM_APP_LIST_ITEM_H
 
 #include <QObject>
-#include <QSharedPointer>
+#include <QScopedPointer>
 
 class SteamAppManifestParser;
 
@@ -16,7 +16,7 @@ public:
     virtual QString GetName() const;
 
 private:
-    QSharedPointer<SteamAppManifestParser> ManifestParser;
+    QScopedPointer<SteamAppManifestParser> ManifestParser;
 };
 
 #endif // STEAM_APP_LIST_ITEM_H
