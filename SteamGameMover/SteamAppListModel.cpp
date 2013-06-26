@@ -1,7 +1,7 @@
 #include "SteamAppListModel.h"
 #include "SteamAppListItem.h"
 
-SteamAppListModel::SteamAppListModel(QList<QSharedPointer<SteamAppListItem> > apps, QObject *parent) :
+SteamAppListModel::SteamAppListModel(const QList<QSharedPointer<SteamAppListItem> >& apps, QObject *parent) :
     QAbstractListModel(parent),
     Apps(apps)
 {

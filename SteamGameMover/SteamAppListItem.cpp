@@ -7,6 +7,8 @@ SteamAppListItem::SteamAppListItem(const QString& manifestName, QObject *parent)
 {
 }
 
+SteamAppListItem::~SteamAppListItem() {}
+
 QString SteamAppListItem::GetName() const
 {
     return ManifestParser->GetAppName();

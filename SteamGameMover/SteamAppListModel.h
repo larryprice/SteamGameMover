@@ -12,7 +12,7 @@ class SteamAppListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    SteamAppListModel(QList<QSharedPointer<SteamAppListItem> > apps, QObject *parent = 0);
+    SteamAppListModel(const QList<QSharedPointer<SteamAppListItem> >& apps, QObject *parent = 0);
     virtual ~SteamAppListModel() {}
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;

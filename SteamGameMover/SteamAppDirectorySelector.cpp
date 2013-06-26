@@ -26,9 +26,8 @@ void SteamAppDirectorySelector::OpenFileDialog()
     if (NULL != AppDir && NULL != ListView)
     {
         QString appDirName = QFileDialog::getExistingDirectory(Parent, tr("Open Directory"), QString(),
-                                                        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+                                   QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
         AppDir->setText(appDirName);
-
         Refresh();
     }
 }

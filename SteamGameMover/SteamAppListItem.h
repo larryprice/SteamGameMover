@@ -11,8 +11,9 @@ class SteamAppListItem : public QObject
     Q_OBJECT
 public:
     SteamAppListItem(const QString &manifestName, QObject *parent = 0);
+    virtual ~SteamAppListItem();
 
-    QString GetName() const;
+    virtual QString GetName() const;
 
 private:
     QSharedPointer<SteamAppManifestParser> ManifestParser;
