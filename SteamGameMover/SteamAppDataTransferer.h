@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+class SteamAppListItem;
+
 class SteamAppDataTransferer : public QObject
 {
     Q_OBJECT
@@ -16,6 +18,8 @@ public:
 public slots:
     void SetLeftDir(const QString& dirName);
     void SetRightDir(const QString& dirName);
+    void MoveAppsLeftToRight(const QList<QSharedPointer<SteamAppListItem> >& apps);
+    void MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& apps);
 
 private:
     QString LeftDir;

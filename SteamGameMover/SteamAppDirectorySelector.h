@@ -2,7 +2,6 @@
 #define SGM_DIRECTORY_SELECTOR_H
 
 #include <QObject>
-
 class SteamAppListItem;
 
 class QLineEdit;
@@ -20,6 +19,7 @@ public:
 
 signals:
     void AppDirChanged(const QString& dirName);
+    void MoveApps(const QList<QSharedPointer<SteamAppListItem> > apps);
 
 public slots:
     void OpenFileDialog();

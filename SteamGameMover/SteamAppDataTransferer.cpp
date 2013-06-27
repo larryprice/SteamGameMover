@@ -31,3 +31,13 @@ QString SteamAppDataTransferer::GetRightDir() const
 {
     return RightDir;
 }
+
+void SteamAppDataTransferer::MoveAppsLeftToRight(const QList<QSharedPointer<SteamAppListItem> >& /*apps*/)
+{
+
+}
+
+void SteamAppDataTransferer::MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& /*apps*/)
+{
+
+}
