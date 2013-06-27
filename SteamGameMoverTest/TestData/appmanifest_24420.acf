@@ -1,0 +1,26 @@
+"AppState"
+{
+	"appID"		"24420"
+	"Universe"		"1"
+	"StateFlags"		"4"
+	"installdir"		"Aquaria"
+	"LastUpdated"		"1371586274"
+	"UpdateResult"		"0"
+	"SizeOnDisk"		"220692356"
+	"buildid"		"48063"
+	"UserID"		"76561198038485130"
+	"BytesToDownload"		"207128320"
+	"BytesDownloaded"		"207128320"
+	"UserConfig"
+	{
+		"name"		"Aquaria"
+		"GameID"		"24420"
+		"Installed"		"1"
+		"appinstalldir"		"/data/SteamLibrary/steamapps/common/Aquaria"
+		"Language"		"english"
+	}
+	"MountedDepots"
+	{
+		"24423"		"1175046721368661946"
+	}
+}

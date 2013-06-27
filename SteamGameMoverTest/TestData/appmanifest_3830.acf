@@ -1,0 +1,26 @@
+"AppState"
+{
+	"appID"		"3830"
+	"Universe"		"1"
+	"StateFlags"		"4"
+	"installdir"		"Psychonauts"
+	"LastUpdated"		"1368288897"
+	"UpdateResult"		"0"
+	"SizeOnDisk"		"5486819683"
+	"buildid"		"66158"
+	"UserID"		"76561198038485130"
+	"BytesToDownload"		"4313884832"
+	"BytesDownloaded"		"4313884832"
+	"UserConfig"
+	{
+		"name"		"Psychonauts"
+		"GameID"		"3830"
+		"Installed"		"1"
+		"appinstalldir"		"/data/SteamLibrary/steamapps/common/Psychonauts"
+		"Language"		"english"
+	}
+	"MountedDepots"
+	{
+		"3840"		"6435691072425329754"
+	}
+}

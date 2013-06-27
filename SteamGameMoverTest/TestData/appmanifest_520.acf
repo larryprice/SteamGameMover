@@ -1,0 +1,28 @@
+"AppState"
+{
+	"appID"		"520"
+	"Universe"		"1"
+	"StateFlags"		"4"
+	"installdir"		"Team Fortress 2 Beta"
+	"LastUpdated"		"1368288000"
+	"UpdateResult"		"0"
+	"SizeOnDisk"		"12627363897"
+	"buildid"		"55664"
+	"UserID"		"76561198038485130"
+	"BytesToDownload"		"6822666480"
+	"BytesDownloaded"		"6822666480"
+	"UserConfig"
+	{
+		"name"		"Team Fortress 2 Beta"
+		"GameID"		"520"
+		"Installed"		"1"
+		"appinstalldir"		"/data/SteamLibrary/steamapps/common/Team Fortress 2 Beta"
+		"Language"		"english"
+	}
+	"MountedDepots"
+	{
+		"521"		"5733084599438803116"
+		"520"		"4141507912678323910"
+		"525"		"9156317847814208859"
+	}
+}
