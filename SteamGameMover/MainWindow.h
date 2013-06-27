@@ -5,6 +5,7 @@
 #include <QScopedPointer>
 
 class SteamAppDirectorySelector;
+class SteamAppDataTransferer;
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +23,7 @@ private:
     Ui::MainWindow* Ui;
     QScopedPointer<SteamAppDirectorySelector> LeftDirectorySelector;
     QScopedPointer<SteamAppDirectorySelector> RightDirectorySelector;
+    QScopedPointer<SteamAppDataTransferer> DataTransferer;
 };
 
 #endif // MAINWINDOW_H

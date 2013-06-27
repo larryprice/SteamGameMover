@@ -18,9 +18,14 @@ public:
     SteamAppDirectorySelector(QLineEdit* text, QListView* list, QWidget *parent);
     virtual ~SteamAppDirectorySelector();
 
+signals:
+    void AppDirChanged(const QString& dirName);
+
 public slots:
     void OpenFileDialog();
     void Refresh();
+    void MoveSelectedApps();
+    void MoveAllApps();
 
 private:
     QList<QSharedPointer<SteamAppListItem> > GetGameList();

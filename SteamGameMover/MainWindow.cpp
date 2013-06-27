@@ -1,12 +1,14 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "SteamAppDirectorySelector.h"
+#include "SteamAppDataTransferer.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     Ui(new Ui::MainWindow),
     LeftDirectorySelector(),
-    RightDirectorySelector()
+    RightDirectorySelector(),
+    DataTransferer(new SteamAppDataTransferer())
 {
     Ui->setupUi(this);
 
@@ -22,6 +24,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(Ui->BrowseRightBtn, SIGNAL(clicked()), RightDirectorySelector.data(), SLOT(OpenFileDialog()));
     connect(Ui->RefreshBtn, SIGNAL(clicked()), RightDirectorySelector.data(), SLOT(Refresh()));
+
+    connect(LeftDirectorySelector.data(), SIGNAL(AppDirChanged(QString)), DataTransferer.data(), SLOT(SetLeftDir(QString)));
+    connect(RightDirectorySelector.data(), SIGNAL(AppDirChanged(QString)), DataTransferer.data(), SLOT(SetRightDir(QString)));
+
+    connect(Ui->MoveSelectedRightBtn, SIGNAL(clicked()), LeftDirectorySelector.data(), SLOT(MoveSelectedApps()));
+    connect(Ui->MoveSelectedLeftBtn, SIGNAL(clicked()), RightDirectorySelector.data(), SLOT(MoveSelectedApps()));
+
+    connect(Ui->MoveAllRightBtn, SIGNAL(clicked()), LeftDirectorySelector.data(), SLOT(MoveAllApps()));
+    connect(Ui->MoveAllLeftBtn, SIGNAL(clicked()), RightDirectorySelector.data(), SLOT(MoveAllApps()));
 }
 
 MainWindow::~MainWindow()

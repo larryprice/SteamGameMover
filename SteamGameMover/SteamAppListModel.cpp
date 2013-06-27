@@ -14,24 +14,24 @@ int SteamAppListModel::rowCount(const QModelIndex& /*parent*/) const
 
 QVariant SteamAppListModel::data(const QModelIndex& index, int role) const
 {
-    if (!index.isValid())
+    QVariant data;
+    if (index.isValid() && index.row() < Apps.count() && role == Qt::DisplayRole)
     {
-        return QVariant();
+        data = Apps.at(index.row())->GetName();
     }
 
-    if (index.row() >= Apps.count())
+    return data;
+}
+
+QSharedPointer<SteamAppListItem> SteamAppListModel::app(const QModelIndex& index) const
+{
+    QSharedPointer<SteamAppListItem> app;
+    if (index.isValid() && index.row() < Apps.count())
     {
-        return QVariant();
+        app = Apps.at(index.row());
     }
 
-    if (role == Qt::DisplayRole)
-    {
-        return Apps.at(index.row())->GetName();
-    }
-    else
-    {
-        return QVariant();
-    }
+    return app;
 }
 
 QVariant SteamAppListModel::headerData(int section, Qt::Orientation orientation, int role) const

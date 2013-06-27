@@ -9,6 +9,17 @@ class SteamAppDataTransferer : public QObject
 public:
     SteamAppDataTransferer(QObject *parent = 0);
     virtual ~SteamAppDataTransferer();
+
+    QString GetLeftDir() const;
+    QString GetRightDir() const;
+
+public slots:
+    void SetLeftDir(const QString& dirName);
+    void SetRightDir(const QString& dirName);
+
+private:
+    QString LeftDir;
+    QString RightDir;
 };
 
 #endif // STEAMAPPDATATRANSFERER_H

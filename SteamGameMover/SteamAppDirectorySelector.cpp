@@ -25,9 +25,13 @@ void SteamAppDirectorySelector::OpenFileDialog()
 {
     if (NULL != AppDir && NULL != ListView)
     {
-        QString appDirName = QFileDialog::getExistingDirectory(Parent, tr("Open Directory"), QString(),
+        QString appDirName = QFileDialog::getExistingDirectory(Parent, tr("Open SteamApps Folder"), QString(),
                                    QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-        AppDir->setText(appDirName);
+        if (appDirName != AppDir->text())
+        {
+            AppDir->setText(appDirName);
+            emit AppDirChanged(appDirName);
+        }
         Refresh();
     }
 }
@@ -49,4 +53,28 @@ QList<QSharedPointer<SteamAppListItem> > SteamAppDirectorySelector::GetGameList(
         }
     }
     return gameList;
+}
+#include <QDebug>
+void SteamAppDirectorySelector::MoveSelectedApps()
+{
+    SteamAppListModel* model = dynamic_cast<SteamAppListModel*>(ListView->model());
+    if (NULL != model)
+    {
+        foreach(const QModelIndex& idx, ListView->selectionModel()->selectedIndexes())
+        {
+            qDebug() << model->app(idx)->GetName();
+        }
+    }
+}
+
+void SteamAppDirectorySelector::MoveAllApps()
+{
+    SteamAppListModel* model = dynamic_cast<SteamAppListModel*>(ListView->model());
+    if (NULL != model)
+    {
+        for (int i=0; i<model->rowCount(); ++i)
+        {
+            qDebug() << model->app(model->index(i))->GetName();
+        }
+    }
 }

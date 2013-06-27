@@ -46,7 +46,11 @@
       </layout>
      </item>
      <item>
-      <widget class="QListView" name="AppsLeftListBox"/>
+      <widget class="QListView" name="AppsLeftListBox">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -79,7 +83,11 @@
       </layout>
      </item>
      <item>
-      <widget class="QListView" name="AppsRightListBox"/>
+      <widget class="QListView" name="AppsRightListBox">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
