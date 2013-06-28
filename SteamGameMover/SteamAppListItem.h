@@ -14,6 +14,8 @@ public:
     virtual ~SteamAppListItem();
 
     virtual QString GetName() const;
+    virtual qulonglong GetSize() const;
+    virtual QString GetInstallDir() const;
 
 private:
     QScopedPointer<SteamAppManifestParser> ManifestParser;

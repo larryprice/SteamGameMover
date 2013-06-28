@@ -10,6 +10,10 @@ class SteamAppManifestParserTest: public QObject
 private slots:
     void GetAppNameReturnsNameOfApp();
     void GetAppNameReturnsEmptyStringWhenFileDoesNotExist();
+    void GetSizeReturnsZeroWhenFileDoesNotExist();
+    void GetSizeReturnsSizeOnDisk();
+    void GetInstallDirReturnsEmptyStringWhenFileDoesNotExist();
+    void GetInstallDirReturnsAppInstallDir();
 };
 
 void SteamAppManifestParserTest::GetAppNameReturnsNameOfApp()
@@ -26,6 +30,38 @@ void SteamAppManifestParserTest::GetAppNameReturnsEmptyStringWhenFileDoesNotExis
     QVERIFY2(!QFile::exists(filePath), "Test file should not exist!");
     SteamAppManifestParser parser(filePath);
     QCOMPARE(parser.GetAppName(), QString());
+}
+
+void SteamAppManifestParserTest::GetSizeReturnsZeroWhenFileDoesNotExist()
+{
+    QString filePath("TestData/herp_derp");
+    QVERIFY2(!QFile::exists(filePath), "Test file should not exist!");
+    SteamAppManifestParser parser(filePath);
+    QCOMPARE(parser.GetSize(), (qulonglong)0);
+}
+
+void SteamAppManifestParserTest::GetSizeReturnsSizeOnDisk()
+{
+    QString filePath("TestData/appmanifest_225260.acf");
+    QVERIFY2(QFile::exists(filePath), "Test file does not exist!");
+    SteamAppManifestParser parser(filePath);
+    QCOMPARE(parser.GetSize(), (qulonglong)8998762563);
+}
+
+void SteamAppManifestParserTest::GetInstallDirReturnsAppInstallDir()
+{
+    QString filePath("TestData/appmanifest_225260.acf");
+    QVERIFY2(QFile::exists(filePath), "Test file does not exist!");
+    SteamAppManifestParser parser(filePath);
+    QCOMPARE(parser.GetInstallDir(), QString("/home/lrp/.local/share/Steam/SteamApps/common/BrutalLegend"));
+}
+
+void SteamAppManifestParserTest::GetInstallDirReturnsEmptyStringWhenFileDoesNotExist()
+{
+    QString filePath("TestData/herp_derp");
+    QVERIFY2(!QFile::exists(filePath), "Test file should not exist!");
+    SteamAppManifestParser parser(filePath);
+    QCOMPARE(parser.GetInstallDir(), QString());
 }
 
 DECLARE_TEST(SteamAppManifestParserTest)

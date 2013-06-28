@@ -13,3 +13,13 @@ QString SteamAppListItem::GetName() const
 {
     return ManifestParser->GetAppName();
 }
+
+qulonglong SteamAppListItem::GetSize() const
+{
+    return ManifestParser->GetSize();
+}
+
+QString SteamAppListItem::GetInstallDir() const
+{
+    return ManifestParser->GetInstallDir();
+}

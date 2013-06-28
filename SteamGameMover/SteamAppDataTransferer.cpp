@@ -1,4 +1,6 @@
 #include "SteamAppDataTransferer.h"
+#include "SteamAppListItem.h"
+#include <QSharedPointer>
 
 SteamAppDataTransferer::SteamAppDataTransferer(QObject *parent)
     : QObject(parent),
@@ -32,9 +34,12 @@ QString SteamAppDataTransferer::GetRightDir() const
     return RightDir;
 }
 
-void SteamAppDataTransferer::MoveAppsLeftToRight(const QList<QSharedPointer<SteamAppListItem> >& /*apps*/)
+void SteamAppDataTransferer::MoveAppsLeftToRight(const QList<QSharedPointer<SteamAppListItem> >& apps)
 {
-
+    foreach (QSharedPointer<SteamAppListItem> app, apps)
+    {
+        app->GetName();
+    }
 }
 
 void SteamAppDataTransferer::MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& /*apps*/)

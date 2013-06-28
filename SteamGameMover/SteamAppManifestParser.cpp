@@ -4,7 +4,10 @@
 #include <QTextStream>
 
 SteamAppManifestParser::SteamAppManifestParser(const QString& filePath)
-    : AppManifestFilePath(filePath)
+    : AppManifestFilePath(filePath),
+      AppName(),
+      SizeOnDisk(0),
+      InstallDir()
 {
 }
 
@@ -16,23 +19,52 @@ QString SteamAppManifestParser::GetAppName()
 {
     if (AppName.isNull())
     {
-        QFile manifest(AppManifestFilePath);
-        if (manifest.open(QIODevice::ReadOnly))
-        {
-            QTextStream manifestStream(&manifest);
-            while (!manifestStream.atEnd())
-            {
-                QStringList lines = manifestStream.readLine().simplified().split("\" \"");
-                if (lines.count() == 2 && lines.first() == "\"name")
-                {
-                    AppName = lines.last();
-                    AppName.chop(1);
-                    break;
-                }
-            }
-            manifest.close();
-        }
+        AppName = FindField("name");
     }
 
     return AppName;
+}
+
+qulonglong SteamAppManifestParser::GetSize()
+{
+    if (0 == SizeOnDisk)
+    {
+        SizeOnDisk = FindField("SizeOnDisk").toULongLong();
+    }
+
+    return SizeOnDisk;
+}
+
+QString SteamAppManifestParser::GetInstallDir()
+{
+    if (InstallDir.isNull())
+    {
+        InstallDir = FindField("appinstalldir");
+    }
+
+    return InstallDir;
+}
+
+QString SteamAppManifestParser::FindField(const QString& field)
+{
+    QString value;
+    QFile manifest(AppManifestFilePath);
+    if (manifest.open(QIODevice::ReadOnly))
+    {
+        QTextStream manifestStream(&manifest);
+        while (!manifestStream.atEnd())
+        {
+            QStringList lines = manifestStream.readLine().simplified().split("\" \"");
+            QString preparedField = QString("\"%1").arg(field);
+            if (lines.count() == 2 && lines.first() == preparedField)
+            {
+                value = lines.last();
+                value.chop(1);
+                break;
+            }
+        }
+        manifest.close();
+    }
+
+    return value;
 }
