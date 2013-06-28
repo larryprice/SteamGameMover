@@ -1,7 +1,9 @@
 #ifndef SGM_DIRECTORY_SELECTOR_H
 #define SGM_DIRECTORY_SELECTOR_H
 
+#include <QModelIndexList>
 #include <QObject>
+
 class SteamAppListItem;
 
 class QLineEdit;
@@ -29,6 +31,7 @@ public slots:
 
 private:
     QList<QSharedPointer<SteamAppListItem> > GetGameList();
+    void MoveAppList(const QModelIndexList &indices);
 
     QWidget* Parent;
     QLineEdit* AppDir;

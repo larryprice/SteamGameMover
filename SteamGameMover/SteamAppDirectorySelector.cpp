@@ -57,31 +57,36 @@ QList<QSharedPointer<SteamAppListItem> > SteamAppDirectorySelector::GetGameList(
 
 void SteamAppDirectorySelector::MoveSelectedApps()
 {
-    SteamAppListModel* model = dynamic_cast<SteamAppListModel*>(ListView->model());
-    if (NULL != model)
+    if (NULL != ListView->model())
     {
-        QList<QSharedPointer<SteamAppListItem> > apps;
-        foreach(const QModelIndex& idx, ListView->selectionModel()->selectedIndexes())
-        {
-            apps << model->app(idx);
-        }
-
-        if (!apps.empty())
-        {
-            emit MoveApps(apps);
-        }
+        MoveAppList(ListView->selectionModel()->selectedIndexes());
     }
 }
 
 void SteamAppDirectorySelector::MoveAllApps()
 {
+    QAbstractItemModel* model = ListView->model();
+    if (NULL != model)
+    {
+        QModelIndexList apps;
+        for (int i=0; i<model->rowCount(); ++i)
+        {
+            apps << model->index(i, 0);
+        }
+
+        MoveAppList(apps);
+    }
+}
+
+void SteamAppDirectorySelector::MoveAppList(const QModelIndexList &indices)
+{
     SteamAppListModel* model = dynamic_cast<SteamAppListModel*>(ListView->model());
     if (NULL != model)
     {
         QList<QSharedPointer<SteamAppListItem> > apps;
-        for (int i=0; i<model->rowCount(); ++i)
+        foreach (const QModelIndex& idx, indices)
         {
-            apps << model->app(model->index(i));
+            apps << model->app(idx);
         }
 
         if (!apps.empty())
