@@ -25,12 +25,11 @@ void SteamAppDirectorySelector::OpenFileDialog()
 {
     if (NULL != AppDir && NULL != ListView)
     {
-        QString appDirName = QFileDialog::getExistingDirectory(Parent, tr("Open SteamApps Folder"), QString(),
+        QString appDirName = QFileDialog::getExistingDirectory(Parent, tr("Open SteamApps Folder"), AppDir->text(),
                                    QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
         if (appDirName != AppDir->text())
         {
             AppDir->setText(appDirName);
-            emit AppDirChanged(appDirName);
         }
         Refresh();
     }
@@ -39,6 +38,7 @@ void SteamAppDirectorySelector::OpenFileDialog()
 void SteamAppDirectorySelector::Refresh()
 {
     ListView->setModel(new SteamAppListModel(GetGameList(), Parent));
+    emit AppDirChanged(AppDir->text());
 }
 
 QList<QSharedPointer<SteamAppListItem> > SteamAppDirectorySelector::GetGameList()

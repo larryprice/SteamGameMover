@@ -53,7 +53,7 @@ void SteamAppListItemTest::GetInstallDirReturnsAppInstallDir()
     QString filePath("TestData/appmanifest_225260.acf");
     QVERIFY2(QFile::exists(filePath), "Test file does not exist!");
     SteamAppListItem item(filePath);
-    QCOMPARE(item.GetInstallDir(), QString("/home/lrp/.local/share/Steam/SteamApps/common/BrutalLegend"));
+    QCOMPARE(item.GetInstallDir(), QString("/home/lrp/Projects/2013/SteamGameMover/build-SteamGameMoverTest/TestData/common/BrutalLegend"));
 }
 
 void SteamAppListItemTest::GetInstallDirReturnsEmptyStringWhenFileDoesNotExist()

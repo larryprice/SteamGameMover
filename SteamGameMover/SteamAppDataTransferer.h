@@ -1,6 +1,7 @@
 #ifndef STEAMAPPDATATRANSFERER_H
 #define STEAMAPPDATATRANSFERER_H
 
+#include <QDir>
 #include <QObject>
 
 class SteamAppListItem;
@@ -22,6 +23,9 @@ public slots:
     void MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& apps);
 
 private:
+    void MoveFilesRecursively(const QDir &sourceDir, const QString &destBasePath) const;
+    void MoveApps(const QList<QSharedPointer<SteamAppListItem> > &apps, const QString& destination) const;
+
     QString LeftDir;
     QString RightDir;
 };

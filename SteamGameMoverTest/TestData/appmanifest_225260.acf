@@ -16,7 +16,7 @@
 		"name"		"Brütal Legend"
 		"GameID"		"225260"
 		"Installed"		"1"
-		"appinstalldir"		"/home/lrp/.local/share/Steam/SteamApps/common/BrutalLegend"
+                "appinstalldir"		"/home/lrp/Projects/2013/SteamGameMover/build-SteamGameMoverTest/TestData/common/BrutalLegend"
 		"Language"		"english"
 	}
 	"MountedDepots"

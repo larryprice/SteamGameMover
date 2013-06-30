@@ -16,7 +16,7 @@
 		"name"		"Aquaria"
 		"GameID"		"24420"
 		"Installed"		"1"
-		"appinstalldir"		"/data/SteamLibrary/steamapps/common/Aquaria"
+                "appinstalldir"		"/home/lrp/Projects/2013/SteamGameMover/build-SteamGameMoverTest/TestData/common/Aquaria"
 		"Language"		"english"
 	}
 	"MountedDepots"
