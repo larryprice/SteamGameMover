@@ -25,6 +25,11 @@ QString SteamAppManifestParser::GetAppName()
     return AppName;
 }
 
+QString SteamAppManifestParser::GetManifestFilePath() const
+{
+    return AppManifestFilePath;
+}
+
 qulonglong SteamAppManifestParser::GetSize()
 {
     if (0 == SizeOnDisk)

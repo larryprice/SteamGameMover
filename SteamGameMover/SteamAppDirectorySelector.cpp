@@ -12,6 +12,7 @@ SteamAppDirectorySelector::SteamAppDirectorySelector(QLineEdit* text, QListView*
       AppDir(text),
       ListView(list)
 {
+    qRegisterMetaType<QList<QSharedPointer<SteamAppListItem> > >("QList<QSharedPointer<SteamAppListItem> >");
 }
 
 SteamAppDirectorySelector::~SteamAppDirectorySelector()

@@ -8,6 +8,7 @@ class SteamAppManifestParserTest: public QObject
 {
     Q_OBJECT
 private slots:
+    void GetAppManifestPathReturnsAppManifestFilePath();
     void GetAppNameReturnsNameOfApp();
     void GetAppNameReturnsEmptyStringWhenFileDoesNotExist();
     void GetSizeReturnsZeroWhenFileDoesNotExist();
@@ -15,6 +16,13 @@ private slots:
     void GetInstallDirReturnsEmptyStringWhenFileDoesNotExist();
     void GetInstallDirReturnsAppInstallDir();
 };
+
+void SteamAppManifestParserTest::GetAppManifestPathReturnsAppManifestFilePath()
+{
+    QString filePath("TestData/appmanifest_225260.acf");
+    SteamAppManifestParser parser(filePath);
+    QCOMPARE(parser.GetManifestFilePath(), filePath);
+}
 
 void SteamAppManifestParserTest::GetAppNameReturnsNameOfApp()
 {

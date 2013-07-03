@@ -14,6 +14,11 @@ QString SteamAppListItem::GetName() const
     return ManifestParser->GetAppName();
 }
 
+QString SteamAppListItem::GetManifestFilePath() const
+{
+    return ManifestParser->GetManifestFilePath();
+}
+
 qulonglong SteamAppListItem::GetSize() const
 {
     return ManifestParser->GetSize();

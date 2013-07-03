@@ -14,6 +14,7 @@ public:
     virtual ~SteamAppListItem();
 
     virtual QString GetName() const;
+    virtual QString GetManifestFilePath() const;
     virtual qulonglong GetSize() const;
     virtual QString GetInstallDir() const;
 

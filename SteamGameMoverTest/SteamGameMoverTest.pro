@@ -28,3 +28,4 @@ HEADERS += \
     $${SOURCE_UNDER_TEST}SteamAppListItem.h \
     $${SOURCE_UNDER_TEST}SteamAppListModel.h \
     $${SOURCE_UNDER_TEST}SteamAppDataTransferer.h
+

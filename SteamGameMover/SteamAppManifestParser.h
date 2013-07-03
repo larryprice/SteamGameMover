@@ -10,6 +10,8 @@ public:
     SteamAppManifestParser(const QString& filePath);
     virtual ~SteamAppManifestParser();
 
+    QString GetManifestFilePath() const;
+
     QString GetAppName();
     qulonglong GetSize();
     QString GetInstallDir();
