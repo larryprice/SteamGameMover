@@ -7,6 +7,7 @@
 class SteamAppDataTransfererTest: public QObject
 {
     Q_OBJECT
+
 private slots:
     void SetsLeftDir();
     void SetsRightDir();

@@ -15,6 +15,7 @@ public:
     QString GetAppName();
     qulonglong GetSize();
     QString GetInstallDir();
+    bool SetInstallDir(const QString &newDir);
 private:
     QString FindField(const QString& field);
 

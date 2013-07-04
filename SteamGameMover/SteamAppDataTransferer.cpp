@@ -1,5 +1,6 @@
 #include "SteamAppDataTransferer.h"
 #include "SteamAppListItem.h"
+#include "SteamAppManifestParser.h"
 #include <QDirIterator>
 #include <QSharedPointer>
 
@@ -38,13 +39,16 @@ QString SteamAppDataTransferer::GetRightDir() const
 void SteamAppDataTransferer::MoveAppsLeftToRight(const QList<QSharedPointer<SteamAppListItem> >& apps)
 {
     MoveApps(apps, LeftDir, RightDir);
+    emit CopyFinished();
 }
 
 void SteamAppDataTransferer::MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& apps)
 {
     MoveApps(apps, RightDir, LeftDir);
+    emit CopyFinished();
 }
 
+#include <QDebug>
 void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination) const
 {
     foreach (QSharedPointer<SteamAppListItem> app, apps)
@@ -62,14 +66,21 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
         {
             MoveFilesRecursively(installDir, source, destination);
 
-            // set appmanifest appinstalldir -> destBasePath
-            // QFile appFile(app->GetManifestFilePath);
-            // if (!QFile::copy(appFile.absoluteFilePath, appFile.absoluteFilePath().replace(source, destination)))
+            QString appFilePath(app->GetManifestFilePath());
+            QString newAppFilePath = app->GetManifestFilePath().replace(source, destination);
+            if (QFile::copy(appFilePath, newAppFilePath))
+            {
+                SteamAppManifestParser parser(newAppFilePath);
+                parser.SetInstallDir(installDir.absolutePath().replace(source, destination));
+            }
+            else
+            {
+                qDebug() << "Could not copy manifest.";
+            }
         }
     }
 }
 
-#include <QDebug>
 void SteamAppDataTransferer::MoveFilesRecursively(const QDir& sourceDir, const QString& sourceBasePath, const QString& destBasePath) const
 {
     QDirIterator iterator(sourceDir.absolutePath(), QDirIterator::Subdirectories);

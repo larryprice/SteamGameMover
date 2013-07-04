@@ -16,6 +16,9 @@ public:
     QString GetLeftDir() const;
     QString GetRightDir() const;
 
+signals:
+    void CopyFinished();
+
 public slots:
     void SetLeftDir(const QString& dirName);
     void SetRightDir(const QString& dirName);
