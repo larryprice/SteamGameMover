@@ -26,7 +26,7 @@ public slots:
     void MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& apps);
 
 private:
-    void MoveFilesRecursively(const QDir &sourceDir, const QString &sourceBasePath, const QString &destBasePath) const;
+    bool CopyFilesRecursively(const QDir &sourceDir, const QString &sourceBasePath, const QString &destBasePath) const;
     void MoveApps(const QList<QSharedPointer<SteamAppListItem> > &apps, const QString &source, const QString& destination) const;
 
     QString LeftDir;

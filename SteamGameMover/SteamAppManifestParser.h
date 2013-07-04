@@ -17,6 +17,7 @@ public:
     QString GetInstallDir();
     bool SetInstallDir(const QString &newDir);
 private:
+    bool WriteManifest(const QStringList& lines) const;
     QString FindField(const QString& field);
 
     QString AppManifestFilePath;

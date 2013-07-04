@@ -51,57 +51,71 @@ void SteamAppDataTransferer::MoveAppsRightToLeft(const QList<QSharedPointer<Stea
 #include <QDebug>
 void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination) const
 {
-    foreach (QSharedPointer<SteamAppListItem> app, apps)
+    foreach (const QSharedPointer<SteamAppListItem>& app, apps)
     {
+        // Check size
+
+        // check that install path exists
         QString installPath = app->GetInstallDir();
         QDir installDir(installPath);
         if (!installDir.exists())
         {
-            // sometimes on Linux, Steam puts "steamapps" as the appinstalldir even though it should be SteamApps
+            // sometimes on Linux, Steam puts "steamapps" as the appinstalldir even though it should be "SteamApps"
             installPath.replace("steamapps", "SteamApps");
             installDir.setPath(installPath);
         }
 
-        if (installDir.exists())
+        // copy files
+        if (!installDir.exists())
         {
-            MoveFilesRecursively(installDir, source, destination);
-
-            QString appFilePath(app->GetManifestFilePath());
-            QString newAppFilePath = app->GetManifestFilePath().replace(source, destination);
-            if (QFile::copy(appFilePath, newAppFilePath))
-            {
-                SteamAppManifestParser parser(newAppFilePath);
-                parser.SetInstallDir(installDir.absolutePath().replace(source, destination));
-            }
-            else
-            {
-                qDebug() << "Could not copy manifest.";
-            }
+            qDebug() << "Could not find install dir";
+            continue;
         }
+
+        if (!CopyFilesRecursively(installDir, source, destination))
+        {
+            qDebug() << "Copy failed";
+            continue;
+        }
+
+        QString newAppFilePath = app->GetManifestFilePath().replace(source, destination);
+        if (!QFile::copy(app->GetManifestFilePath(), newAppFilePath))
+        {
+            qDebug() << "Could not copy manifest.";
+            continue;
+        }
+
+        SteamAppManifestParser parser(newAppFilePath);
+        if (!parser.SetInstallDir(installPath.replace(source, destination)))
+        {
+            qDebug() << "Failed to edit manifest";
+        }
+
+        // remove files
     }
 }
 
-void SteamAppDataTransferer::MoveFilesRecursively(const QDir& sourceDir, const QString& sourceBasePath, const QString& destBasePath) const
+bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const QString& sourceBasePath, const QString& destBasePath) const
 {
+    bool success = true;
+
     QDirIterator iterator(sourceDir.absolutePath(), QDirIterator::Subdirectories);
-    while (iterator.hasNext()) {
+    while (iterator.hasNext())
+    {
         iterator.next();
         if (!iterator.fileInfo().isDir())
         {
-            QString sourceFile = iterator.filePath();
-
             QFileInfo fileInfo = iterator.fileInfo();
             QString relevantPath = fileInfo.absolutePath().replace(sourceBasePath, destBasePath);
             QString destFile = fileInfo.absoluteFilePath().replace(sourceBasePath, destBasePath);
 
-            if (!sourceDir.mkpath(relevantPath))
+            if (!sourceDir.mkpath(relevantPath) || !QFile::copy(fileInfo.absoluteFilePath(), destFile))
             {
-                qDebug() << "Failed to mkPath" << relevantPath;
-            }
-            if (!QFile::copy(sourceFile, destFile))
-            {
-                qDebug() << sourceFile << "failed to copy";
+                success = false;
+                break;
             }
         }
     }
+
+    return success;
 }

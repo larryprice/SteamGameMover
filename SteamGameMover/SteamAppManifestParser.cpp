@@ -50,10 +50,11 @@ QString SteamAppManifestParser::GetInstallDir()
     return InstallDir;
 }
 
-#include <QDebug>
 bool SteamAppManifestParser::SetInstallDir(const QString& newDir)
 {
+    bool success = true;
     QFile manifest(AppManifestFilePath);
+
     if (manifest.open(QIODevice::ReadOnly))
     {
         QStringList linesToWrite;
@@ -71,17 +72,36 @@ bool SteamAppManifestParser::SetInstallDir(const QString& newDir)
             linesToWrite << line;
         }
         manifest.close();
-        if (manifest.open(QIODevice::WriteOnly))
+        success = WriteManifest(linesToWrite);
+    }
+    else
+    {
+        success = false;
+    }
+
+    return success;
+}
+
+bool SteamAppManifestParser::WriteManifest(const QStringList& lines) const
+{
+    bool success = true;
+    QFile manifest(AppManifestFilePath);
+
+    if (manifest.open(QIODevice::WriteOnly))
+    {
+        QTextStream manifestStream(&manifest);
+        foreach(const QString& line, lines)
         {
-            QTextStream manifestStream(&manifest);
-            foreach(const QString& line, linesToWrite)
-            {
-                manifestStream << line << endl;
-            }
+            manifestStream << line << endl;
         }
         manifest.close();
     }
-    return false;
+    else
+    {
+        success = false;
+    }
+
+    return success;
 }
 
 QString SteamAppManifestParser::FindField(const QString& field)
