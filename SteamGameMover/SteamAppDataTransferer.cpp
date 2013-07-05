@@ -53,9 +53,6 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
 {
     foreach (const QSharedPointer<SteamAppListItem>& app, apps)
     {
-        // Check size
-
-        // check that install path exists
         QString installPath = app->GetInstallDir();
         QDir installDir(installPath);
         if (!installDir.exists())
@@ -63,13 +60,12 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             // sometimes on Linux, Steam puts "steamapps" as the appinstalldir even though it should be "SteamApps"
             installPath.replace("steamapps", "SteamApps");
             installDir.setPath(installPath);
-        }
 
-        // copy files
-        if (!installDir.exists())
-        {
-            qDebug() << "Could not find install dir";
-            continue;
+            if (!installDir.exists())
+            {
+                qDebug() << "Could not find install dir";
+                continue;
+            }
         }
 
         if (!CopyFilesRecursively(installDir, source, destination))
@@ -81,7 +77,7 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
         QString newAppFilePath = app->GetManifestFilePath().replace(source, destination);
         if (!QFile::copy(app->GetManifestFilePath(), newAppFilePath))
         {
-            qDebug() << "Could not copy manifest.";
+            qDebug() << "Failed to copy manifest.";
             continue;
         }
 
@@ -89,9 +85,21 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
         if (!parser.SetInstallDir(installPath.replace(source, destination)))
         {
             qDebug() << "Failed to edit manifest";
+            continue;
         }
 
-        // remove files
+        if (!installDir.removeRecursively())
+        {
+            qDebug() << "Failed to delete original files";
+            continue;
+        }
+
+        QFile appManifest(app->GetManifestFilePath());
+        if (!appManifest.remove())
+        {
+            qDebug() << "Failed to delete original manifest";
+            continue;
+        }
     }
 }
 
