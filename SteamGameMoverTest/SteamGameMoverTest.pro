@@ -15,7 +15,8 @@ SOURCES += \
     SteamAppDataTransfererTest.cpp
 
 HEADERS += \
-    AutoTest.h
+    AutoTest.h \
+    SteamAppListItemFake.h
 
 SOURCES += \
     $${SOURCE_UNDER_TEST}SteamAppManifestParser.cpp \

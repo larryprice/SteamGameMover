@@ -2,6 +2,7 @@
 
 #include "../SteamGameMover/SteamAppListModel.h"
 #include "../SteamGameMover/SteamAppListItem.h"
+#include "SteamAppListItemFake.h"
 
 #include <QFile>
 
@@ -19,16 +20,6 @@ private slots:
     void AppReturnsEmptyForInvalidIndex();
     void AppReturnsEmptyForOutOfRangeIndex();
     void AppReturnsExpectedApp();
-};
-
-class SteamAppListItemFake : public SteamAppListItem
-{
-public:
-    SteamAppListItemFake(QString name) : SteamAppListItem(""), Name(name) {}
-    QString GetName() const { return Name; }
-
-private:
-    QString Name;
 };
 
 void SteamAppListModelTest::RowCountReturnsZeroForNoApps()
@@ -92,10 +83,12 @@ void SteamAppListModelTest::DataReturnsEmptyForRoleThatIsNotDisplayRole()
 
 void SteamAppListModelTest::DataReturnsExpectedData()
 {
+    SteamAppListItemFake app2;
+    app2.SetName("Item2");
     QList<QSharedPointer<SteamAppListItem> > apps;
-    apps << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake("Item1"))
-         << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake("Item2"))
-         << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake("Item3"));
+    apps << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake())
+         << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake(app2))
+         << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake());
     SteamAppListModel model(apps);
     QCOMPARE(3, model.rowCount());
     QModelIndex idx = model.index(1);
@@ -132,10 +125,12 @@ void SteamAppListModelTest::AppReturnsEmptyForOutOfRangeIndex()
 
 void SteamAppListModelTest::AppReturnsExpectedApp()
 {
+    SteamAppListItemFake app2;
+    app2.SetName("Item2");
     QList<QSharedPointer<SteamAppListItem> > apps;
-    apps << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake("Item1"))
-         << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake("Item2"))
-         << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake("Item3"));
+    apps << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake())
+         << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake(app2))
+         << QSharedPointer<SteamAppListItem>(new SteamAppListItemFake());
     SteamAppListModel model(apps);
     QCOMPARE(3, model.rowCount());
     QModelIndex idx = model.index(1);

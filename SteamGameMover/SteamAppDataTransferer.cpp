@@ -11,6 +11,12 @@ SteamAppDataTransferer::SteamAppDataTransferer(QObject *parent)
 {
 }
 
+SteamAppDataTransferer::SteamAppDataTransferer(const SteamAppDataTransferer& rhs)
+    : QObject(rhs.parent()),
+      LeftDir(rhs.LeftDir),
+      RightDir(rhs.RightDir)
+{
+}
 
 SteamAppDataTransferer::~SteamAppDataTransferer()
 {
