@@ -8,6 +8,7 @@ class TransferErrorDialog;
 }
 
 class AppTransferError;
+class SteamAppListItem;
 
 class TransferErrorDialog : public QDialog
 {
@@ -17,11 +18,19 @@ public:
     explicit TransferErrorDialog(QWidget *parent = 0);
     ~TransferErrorDialog();
 
+signals:
+    void RetryTransfer(const QList<QSharedPointer<SteamAppListItem> >&);
+
 public slots:
     void Show(const QList<AppTransferError>&);
+    void Retry();
+
+private slots:
+    void ClearErrors();
     
 private:
     Ui::TransferErrorDialog *ui;
+    QList<AppTransferError> Errors;
 };
 
 #endif // TRANSFER_ERROR_DIALOG_H

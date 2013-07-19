@@ -10,14 +10,16 @@
 SteamAppDataTransferer::SteamAppDataTransferer(QObject *parent)
     : QObject(parent),
       LeftDir(),
-      RightDir()
+      RightDir(),
+      PreviousTransfer(None)
 {
 }
 
 SteamAppDataTransferer::SteamAppDataTransferer(const SteamAppDataTransferer& rhs)
     : QObject(rhs.parent()),
       LeftDir(rhs.LeftDir),
-      RightDir(rhs.RightDir)
+      RightDir(rhs.RightDir),
+      PreviousTransfer(rhs.PreviousTransfer)
 {
 }
 
@@ -47,14 +49,28 @@ QString SteamAppDataTransferer::GetRightDir() const
 
 void SteamAppDataTransferer::MoveAppsLeftToRight(const QList<QSharedPointer<SteamAppListItem> >& apps)
 {
+    PreviousTransfer = LeftToRight;
     MoveApps(apps, LeftDir, RightDir);
     emit CopyFinished();
 }
 
 void SteamAppDataTransferer::MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& apps)
 {
+    PreviousTransfer = RightToLeft;
     MoveApps(apps, RightDir, LeftDir);
     emit CopyFinished();
+}
+
+void SteamAppDataTransferer::RetryPreviousTransfer(const QList<QSharedPointer<SteamAppListItem> >& apps)
+{
+    if (LeftToRight == PreviousTransfer)
+    {
+        MoveAppsLeftToRight(apps);
+    }
+    else if (RightToLeft == PreviousTransfer)
+    {
+        MoveAppsRightToLeft(apps);
+    }
 }
 
 void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination)

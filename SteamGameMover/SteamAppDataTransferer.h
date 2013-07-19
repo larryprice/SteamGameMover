@@ -27,13 +27,22 @@ public slots:
     void SetRightDir(const QString& dirName);
     void MoveAppsLeftToRight(const QList<QSharedPointer<SteamAppListItem> >& apps);
     void MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& apps);
+    void RetryPreviousTransfer(const QList<QSharedPointer<SteamAppListItem> >& apps);
 
 private:
     bool CopyFilesRecursively(const QDir &sourceDir, const QString &sourceBasePath, const QString &destBasePath) const;
     void MoveApps(const QList<QSharedPointer<SteamAppListItem> > &apps, const QString &source, const QString& destination);
 
+    enum TransferDirection
+    {
+        None = 0,
+        LeftToRight,
+        RightToLeft
+    };
+
     QString LeftDir;
     QString RightDir;
+    TransferDirection PreviousTransfer;
 };
 
 #endif // STEAM_APP_DATA_TRANSFERER_H
