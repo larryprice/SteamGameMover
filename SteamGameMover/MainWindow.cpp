@@ -1,14 +1,17 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+
 #include "SteamAppDirectorySelector.h"
 #include "SteamAppDataTransferer.h"
+#include "TransferErrorDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     Ui(new Ui::MainWindow),
     LeftDirectorySelector(),
     RightDirectorySelector(),
-    DataTransferer(new SteamAppDataTransferer())
+    DataTransferer(new SteamAppDataTransferer()),
+    Error(new TransferErrorDialog(parent))
 {
     Ui->setupUi(this);
 
@@ -21,9 +24,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(Ui->BrowseLeftBtn, SIGNAL(clicked()), LeftDirectorySelector.data(), SLOT(OpenFileDialog()));
     connect(Ui->RefreshBtn, SIGNAL(clicked()), LeftDirectorySelector.data(), SLOT(Refresh()));
+    connect(DataTransferer.data(), SIGNAL(CopyFinished()), LeftDirectorySelector.data(), SLOT(Refresh()));
 
     connect(Ui->BrowseRightBtn, SIGNAL(clicked()), RightDirectorySelector.data(), SLOT(OpenFileDialog()));
     connect(Ui->RefreshBtn, SIGNAL(clicked()), RightDirectorySelector.data(), SLOT(Refresh()));
+    connect(DataTransferer.data(), SIGNAL(CopyFinished()), RightDirectorySelector.data(), SLOT(Refresh()));
 
     connect(LeftDirectorySelector.data(), SIGNAL(AppDirChanged(QString)), DataTransferer.data(), SLOT(SetLeftDir(QString)));
     connect(RightDirectorySelector.data(), SIGNAL(AppDirChanged(QString)), DataTransferer.data(), SLOT(SetRightDir(QString)));
@@ -36,6 +41,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(LeftDirectorySelector.data(), SIGNAL(MoveApps(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(MoveAppsLeftToRight(QList<QSharedPointer<SteamAppListItem> >)));
     connect(RightDirectorySelector.data(), SIGNAL(MoveApps(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(MoveAppsRightToLeft(QList<QSharedPointer<SteamAppListItem> >)));
+
+    connect(DataTransferer.data(), SIGNAL(ErrorsDuringTransfer(QList<AppTransferError>)), Error.data(), SLOT(Show(QList<AppTransferError>)));
 }
 
 MainWindow::~MainWindow()

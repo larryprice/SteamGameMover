@@ -6,9 +6,10 @@
 
 class SteamAppDirectorySelector;
 class SteamAppDataTransferer;
+class TransferErrorDialog;
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -24,6 +25,7 @@ private:
     QScopedPointer<SteamAppDirectorySelector> LeftDirectorySelector;
     QScopedPointer<SteamAppDirectorySelector> RightDirectorySelector;
     QScopedPointer<SteamAppDataTransferer> DataTransferer;
+    QScopedPointer<TransferErrorDialog> Error;
 };
 
 #endif // MAINWINDOW_H

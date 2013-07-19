@@ -13,21 +13,26 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp \
+    MainWindow.cpp \
     SteamAppListModel.cpp \
     SteamAppListItem.cpp \
     SteamAppDirectorySelector.cpp \
     SteamAppManifestParser.cpp \
-    SteamAppDataTransferer.cpp
+    SteamAppDataTransferer.cpp \
+    TransferErrorDialog.cpp \
+    AppTransferError.cpp
 
 HEADERS  += MainWindow.h \
     SteamAppListModel.h \
     SteamAppListItem.h \
     SteamAppDirectorySelector.h \
     SteamAppManifestParser.h \
-    SteamAppDataTransferer.h
+    SteamAppDataTransferer.h \
+    TransferErrorDialog.h \
+    AppTransferError.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    TransferErrorDialog.ui
 
 RESOURCES += \
     resources.qrc

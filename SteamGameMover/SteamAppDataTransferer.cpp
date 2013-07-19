@@ -1,7 +1,10 @@
 #include "SteamAppDataTransferer.h"
 #include "SteamAppListItem.h"
 #include "SteamAppManifestParser.h"
+#include "AppTransferError.h"
+
 #include <QDirIterator>
+#include <QScopedPointer>
 #include <QSharedPointer>
 
 SteamAppDataTransferer::SteamAppDataTransferer(QObject *parent)
@@ -54,9 +57,9 @@ void SteamAppDataTransferer::MoveAppsRightToLeft(const QList<QSharedPointer<Stea
     emit CopyFinished();
 }
 
-#include <QDebug>
-void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination) const
+void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination)
 {
+    QList<AppTransferError> errors;
     foreach (const QSharedPointer<SteamAppListItem>& app, apps)
     {
         QString installPath = app->GetInstallDir();
@@ -69,43 +72,48 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
 
             if (!installDir.exists())
             {
-                qDebug() << "Could not find install dir";
+                errors << AppTransferError(app, "Could not find install directory");
                 continue;
             }
         }
 
         if (!CopyFilesRecursively(installDir, source, destination))
         {
-            qDebug() << "Copy failed";
+            errors << AppTransferError(app, "Copy failed");
             continue;
         }
 
         QString newAppFilePath = app->GetManifestFilePath().replace(source, destination);
         if (!QFile::copy(app->GetManifestFilePath(), newAppFilePath))
         {
-            qDebug() << "Failed to copy manifest.";
+            errors << AppTransferError(app, "Copy of manifest failed");
             continue;
         }
 
         SteamAppManifestParser parser(newAppFilePath);
         if (!parser.SetInstallDir(installPath.replace(source, destination)))
         {
-            qDebug() << "Failed to edit manifest";
+            errors << AppTransferError(app, "Edit of manifest failed");
             continue;
         }
 
         if (!installDir.removeRecursively())
         {
-            qDebug() << "Failed to delete original files";
+            errors << AppTransferError(app, "Removal of old files failed");
             continue;
         }
 
         QFile appManifest(app->GetManifestFilePath());
         if (!appManifest.remove())
         {
-            qDebug() << "Failed to delete original manifest";
+            errors << AppTransferError(app, "Removal of old manifest failed");
             continue;
         }
+    }
+
+    if (!errors.empty())
+    {
+        emit ErrorsDuringTransfer(errors);
     }
 }
 

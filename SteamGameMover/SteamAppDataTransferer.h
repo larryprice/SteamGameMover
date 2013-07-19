@@ -1,10 +1,11 @@
-#ifndef STEAMAPPDATATRANSFERER_H
-#define STEAMAPPDATATRANSFERER_H
+#ifndef STEAM_APP_DATA_TRANSFERER_H
+#define STEAM_APP_DATA_TRANSFERER_H
 
 #include <QDir>
 #include <QObject>
 
 class SteamAppListItem;
+class AppTransferError;
 
 class SteamAppDataTransferer : public QObject
 {
@@ -19,6 +20,7 @@ public:
 
 signals:
     void CopyFinished();
+    void ErrorsDuringTransfer(const QList<AppTransferError>&);
 
 public slots:
     void SetLeftDir(const QString& dirName);
@@ -28,10 +30,10 @@ public slots:
 
 private:
     bool CopyFilesRecursively(const QDir &sourceDir, const QString &sourceBasePath, const QString &destBasePath) const;
-    void MoveApps(const QList<QSharedPointer<SteamAppListItem> > &apps, const QString &source, const QString& destination) const;
+    void MoveApps(const QList<QSharedPointer<SteamAppListItem> > &apps, const QString &source, const QString& destination);
 
     QString LeftDir;
     QString RightDir;
 };
 
-#endif // STEAMAPPDATATRANSFERER_H
+#endif // STEAM_APP_DATA_TRANSFERER_H
