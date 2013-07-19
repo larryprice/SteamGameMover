@@ -7,12 +7,33 @@
 #include <QPushButton>
 #include <QWidget>
 
+
+namespace
+{
+#ifdef Q_OS_LINUX
+    const QString DEFAULT_DIRECTORY = QDir::homePath() + "/.steam/steam/SteamApps";
+
+#elif defined Q_OS_WIN
+    const QString DEFAULT_DIRECTORY = "C:\\Program Files\\Steam\\SteamApps\\";
+
+#elif defined Q_OS_MAC
+    const QString DEFAULT_DIRECTORY = QDir::homePath() + "/Library/Application Support/Steam/SteamApps/";
+
+#else
+    const QString DEFAULT_DIRECTORY = QDir::homePath();
+#endif
+}
+
+
 SteamAppDirectorySelector::SteamAppDirectorySelector(QLineEdit* text, QListView* list, QWidget* parent)
     : Parent(parent),
       AppDir(text),
       ListView(list)
 {
     qRegisterMetaType<QList<QSharedPointer<SteamAppListItem> > >("QList<QSharedPointer<SteamAppListItem> >");
+
+    AppDir->setText(DEFAULT_DIRECTORY);
+    Refresh();
 }
 
 SteamAppDirectorySelector::~SteamAppDirectorySelector()
