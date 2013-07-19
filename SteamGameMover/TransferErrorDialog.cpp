@@ -11,6 +11,7 @@ TransferErrorDialog::TransferErrorDialog(QWidget *parent) :
     ui(new Ui::TransferErrorDialog),
     Errors()
 {
+    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
 
     connect(ui->buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(ClearErrors()));
