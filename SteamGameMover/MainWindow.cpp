@@ -60,8 +60,15 @@ void MainWindow::SetupTransferer()
     connect(DataTransferer.data(), SIGNAL(SingleTransferStarting()), Progress.data(), SLOT(NewTransferStarted()));
     connect(DataTransferer.data(), SIGNAL(TransferProgress(QString,int)), Progress.data(), SLOT(UpdateProgress(QString,int)));
 
+    connect(Progress.data(), SIGNAL(Abort()), this, SLOT(AbortTransfer()));
+
     DataTransferer->moveToThread(&TransferThread);
     TransferThread.start();
+}
+
+void MainWindow::AbortTransfer()
+{
+    DataTransferer->AbortTransfer();
 }
 
 MainWindow::~MainWindow()

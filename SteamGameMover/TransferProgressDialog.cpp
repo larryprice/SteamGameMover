@@ -14,7 +14,7 @@ TransferProgressDialog::TransferProgressDialog(QWidget *parent) :
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
 
-    connect(ui->abortButton, SIGNAL(clicked()), this, SLOT(Abort()));
+    connect(ui->abortButton, SIGNAL(clicked()), this, SIGNAL(Abort()));
 }
 
 TransferProgressDialog::~TransferProgressDialog()
@@ -37,11 +37,6 @@ void TransferProgressDialog::Show(int numApps)
 void TransferProgressDialog::UpdateTransferLabel()
 {
     ui->transferLabel->setText(QString("Transferring %1 of %2 games...").arg(CurrentAppNum).arg(TotalNumApps));
-}
-
-void TransferProgressDialog::Abort()
-{
-    // do nothing
 }
 
 void TransferProgressDialog::NewTransferStarted()

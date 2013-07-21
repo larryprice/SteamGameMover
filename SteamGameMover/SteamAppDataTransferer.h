@@ -18,6 +18,8 @@ public:
     QString GetLeftDir() const;
     QString GetRightDir() const;
 
+    void AbortTransfer();
+
 signals:
     void TransferBeginning(int numApps);
     void SingleTransferStarting();
@@ -46,6 +48,7 @@ private:
     QString LeftDir;
     QString RightDir;
     TransferDirection PreviousTransfer;
+    bool Abort;
 };
 
 #endif // STEAM_APP_DATA_TRANSFERER_H

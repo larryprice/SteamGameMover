@@ -11,7 +11,8 @@ SteamAppDataTransferer::SteamAppDataTransferer(QObject *parent)
     : QObject(parent),
       LeftDir(),
       RightDir(),
-      PreviousTransfer(None)
+      PreviousTransfer(None),
+      Abort(false)
 {
 }
 
@@ -19,7 +20,8 @@ SteamAppDataTransferer::SteamAppDataTransferer(const SteamAppDataTransferer& rhs
     : QObject(rhs.parent()),
       LeftDir(rhs.LeftDir),
       RightDir(rhs.RightDir),
-      PreviousTransfer(rhs.PreviousTransfer)
+      PreviousTransfer(rhs.PreviousTransfer),
+      Abort(false)
 {
 }
 
@@ -73,17 +75,18 @@ void SteamAppDataTransferer::RetryPreviousTransfer(const QList<QSharedPointer<St
 #include <QThread>
 void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination)
 {
+    Abort = false;
     emit TransferBeginning(apps.count());
 
     int percentComplete = 0;
-    quint16 appNum = 1;
+    quint16 appNum = 0;
+    quint16 numApps = apps.count();
     QList<AppTransferError> errors;
     foreach (const QSharedPointer<SteamAppListItem>& app, apps)
     {
         emit SingleTransferStarting();
-        emit TransferProgress(QString("%1\%... %2: %3 of %4 bytes copied").arg(percentComplete).arg(app->GetName()).arg(0).arg(app->GetSize()), percentComplete);
-
-        QThread::msleep(1000);
+        emit TransferProgress(QString("%1\%... %2: Beginning transfer").arg(percentComplete).arg(app->GetName()), percentComplete);
+QThread::sleep(1);
         QString installPath = app->GetInstallDir();
         QDir installDir(installPath);
         if (!installDir.exists())
@@ -136,7 +139,14 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             continue;
         }
 
-        percentComplete = (appNum++ * 100) / apps.count();
+        percentComplete = (++appNum * 100) / numApps;
+        emit TransferProgress(QString("%1\%... %2: Transfer complete").arg(percentComplete).arg(app->GetName()), percentComplete);
+
+        if (Abort)
+        {
+            Abort = false;
+            break;
+        }
     }
 
     if (!errors.empty())
@@ -157,7 +167,6 @@ bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const Q
         iterator.next();
         if (!iterator.fileInfo().isDir())
         {
-//            fileInfo.size()
             QFileInfo fileInfo = iterator.fileInfo();
             QString relevantPath = fileInfo.absolutePath().replace(sourceBasePath, destBasePath);
             QString destFile = fileInfo.absoluteFilePath().replace(sourceBasePath, destBasePath);
@@ -171,4 +180,10 @@ bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const Q
     }
 
     return success;
+}
+
+void SteamAppDataTransferer::AbortTransfer()
+{
+
+    Abort = true;
 }

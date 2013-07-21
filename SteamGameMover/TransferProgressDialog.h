@@ -23,11 +23,11 @@ public slots:
     void NewTransferStarted();
     void UpdateProgress(const QString &msg, int percentage);
 
+signals:
+    void Abort();
+
 private:
     void UpdateTransferLabel();
-
-private slots:
-    void Abort();
     
 private:
     Ui::TransferProgressDialog *ui;

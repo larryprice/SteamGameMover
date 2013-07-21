@@ -23,6 +23,9 @@ public:
     ~MainWindow();
 
     void SetupTransferer();
+
+public slots:
+    void AbortTransfer();
     
 private:
     Ui::MainWindow* Ui;
