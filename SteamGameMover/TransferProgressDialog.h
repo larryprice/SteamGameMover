@@ -23,6 +23,7 @@ public slots:
     void Hide();
     void NewTransferStarted();
     void UpdateProgress(const QString &msg, int percentage);
+    void AbortTransfer();
 
 signals:
     void Abort();

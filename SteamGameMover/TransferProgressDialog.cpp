@@ -15,12 +15,23 @@ TransferProgressDialog::TransferProgressDialog(QWidget *parent) :
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
 
-    connect(ui->abortButton, SIGNAL(clicked()), this, SIGNAL(Abort()));
+    connect(ui->abortButton, SIGNAL(clicked()), this, SLOT(AbortTransfer()));
 }
 
 TransferProgressDialog::~TransferProgressDialog()
 {
     delete ui;
+}
+
+void TransferProgressDialog::AbortTransfer()
+{
+    if (!TransferComplete)
+    {
+        ui->transferLabel->setText(QString("Transfer aborted after %1 of %2 apps").arg(CurrentAppNum).arg(TotalNumApps));
+        ui->closeAfterTransfer->setChecked(false);
+        ui->detailsBox->setChecked(true);
+        emit Abort();
+    }
 }
 
 void TransferProgressDialog::Show(int numApps)
