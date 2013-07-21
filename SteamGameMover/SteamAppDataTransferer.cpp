@@ -76,11 +76,12 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
     emit TransferBeginning(apps.count());
 
     int percentComplete = 0;
+    quint16 appNum = 1;
     QList<AppTransferError> errors;
     foreach (const QSharedPointer<SteamAppListItem>& app, apps)
     {
         emit SingleTransferStarting();
-        emit TransferProgress(QString("%1: %2 of %3 bytes copied").arg(app->GetName()).arg(0).arg(app->GetSize()), percentComplete);
+        emit TransferProgress(QString("%1\%... %2: %3 of %4 bytes copied").arg(percentComplete).arg(app->GetName()).arg(0).arg(app->GetSize()), percentComplete);
 
         QThread::msleep(1000);
         QString installPath = app->GetInstallDir();
@@ -104,6 +105,7 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             continue;
         }
 
+        emit TransferProgress(QString("%1\%... %2: Copying manifest file").arg(percentComplete).arg(app->GetName()), percentComplete);
         QString newAppFilePath = app->GetManifestFilePath().replace(source, destination);
         if (!QFile::copy(app->GetManifestFilePath(), newAppFilePath))
         {
@@ -111,6 +113,7 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             continue;
         }
 
+        emit TransferProgress(QString("%1\%... %2: Editing manifest file").arg(percentComplete).arg(app->GetName()), percentComplete);
         SteamAppManifestParser parser(newAppFilePath);
         if (!parser.SetInstallDir(installPath.replace(source, destination)))
         {
@@ -118,12 +121,14 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             continue;
         }
 
+        emit TransferProgress(QString("%1\%... %2: Deleting old install files").arg(percentComplete).arg(app->GetName()), percentComplete);
         if (!installDir.removeRecursively())
         {
             errors << AppTransferError(app, "Removal of old files failed");
             continue;
         }
 
+        emit TransferProgress(QString("%1\%... %2: Deleting old manifest file").arg(percentComplete).arg(app->GetName()), percentComplete);
         QFile appManifest(app->GetManifestFilePath());
         if (!appManifest.remove())
         {
@@ -131,7 +136,7 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             continue;
         }
 
-        percentComplete += 100 / apps.count();
+        percentComplete = (appNum++ * 100) / apps.count();
     }
 
     if (!errors.empty())
