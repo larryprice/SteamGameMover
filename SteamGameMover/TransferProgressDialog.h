@@ -16,13 +16,23 @@ public:
     virtual ~TransferProgressDialog();
 
 public slots:
-    void closeEvent(QCloseEvent* e);
+    virtual void closeEvent(QCloseEvent* e);
+    virtual void keyPressEvent(QKeyEvent* e);
+
+    void Show(int numApps);
+    void NewTransferStarted();
+    void UpdateProgress(const QString &msg, int percentage);
+
+private:
+    void UpdateTransferLabel();
 
 private slots:
     void Abort();
     
 private:
     Ui::TransferProgressDialog *ui;
+    int TotalNumApps;
+    int CurrentAppNum;
 };
 
 #endif // TRANSFER_PROGRESS_DIALOG_H

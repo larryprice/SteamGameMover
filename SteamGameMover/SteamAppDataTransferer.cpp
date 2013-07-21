@@ -73,12 +73,16 @@ void SteamAppDataTransferer::RetryPreviousTransfer(const QList<QSharedPointer<St
 #include <QThread>
 void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination)
 {
-    emit CopyStarted(apps.count());
+    emit TransferBeginning(apps.count());
 
+    int percentComplete = 0;
     QList<AppTransferError> errors;
     foreach (const QSharedPointer<SteamAppListItem>& app, apps)
     {
-        QThread::sleep(1);
+        emit SingleTransferStarting();
+        emit TransferProgress(QString("%1: %2 of %3 bytes copied").arg(app->GetName()).arg(0).arg(app->GetSize()), percentComplete);
+
+        QThread::msleep(1000);
         QString installPath = app->GetInstallDir();
         QDir installDir(installPath);
         if (!installDir.exists())
@@ -126,6 +130,8 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             errors << AppTransferError(app, "Removal of old manifest failed");
             continue;
         }
+
+        percentComplete += 100 / apps.count();
     }
 
     if (!errors.empty())
@@ -133,7 +139,7 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
         emit ErrorsDuringTransfer(errors);
     }
 
-    emit CopyFinished();
+    emit TransferComplete();
 }
 
 bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const QString& sourceBasePath, const QString& destBasePath) const
@@ -146,6 +152,7 @@ bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const Q
         iterator.next();
         if (!iterator.fileInfo().isDir())
         {
+//            fileInfo.size()
             QFileInfo fileInfo = iterator.fileInfo();
             QString relevantPath = fileInfo.absolutePath().replace(sourceBasePath, destBasePath);
             QString destFile = fileInfo.absoluteFilePath().replace(sourceBasePath, destBasePath);

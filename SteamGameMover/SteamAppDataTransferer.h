@@ -19,8 +19,10 @@ public:
     QString GetRightDir() const;
 
 signals:
-    void CopyStarted(int numApps);
-    void CopyFinished();
+    void TransferBeginning(int numApps);
+    void SingleTransferStarting();
+    void TransferProgress(const QString& msg, int percentComplete);
+    void TransferComplete();
     void ErrorsDuringTransfer(const QList<AppTransferError>&);
 
 public slots:

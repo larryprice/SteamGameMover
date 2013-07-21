@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>500</width>
     <height>252</height>
    </rect>
   </property>
@@ -24,43 +24,44 @@
     <rect>
      <x>10</x>
      <y>220</y>
-     <width>371</width>
+     <width>481</width>
      <height>23</height>
     </rect>
    </property>
    <property name="value">
-    <number>24</number>
+    <number>0</number>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="transferLabel">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>16</y>
-     <width>271</width>
-     <height>16</height>
+     <y>10</y>
+     <width>371</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <pointsize>12</pointsize>
+     <italic>true</italic>
     </font>
    </property>
    <property name="text">
     <string>Transferring</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser">
+  <widget class="QTextBrowser" name="messages">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>80</y>
-     <width>371</width>
+     <width>481</width>
      <height>131</height>
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="detailsBox">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -78,13 +79,13 @@
     <string>Show Details</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="abortButton">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>10</y>
+     <x>390</x>
+     <y>6</y>
      <width>99</width>
-     <height>27</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">

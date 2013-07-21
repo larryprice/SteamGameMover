@@ -48,17 +48,19 @@ void MainWindow::SetupTransferer()
     connect(LeftDirectorySelector.data(), SIGNAL(MoveApps(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(MoveAppsLeftToRight(QList<QSharedPointer<SteamAppListItem> >)));
     connect(RightDirectorySelector.data(), SIGNAL(MoveApps(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(MoveAppsRightToLeft(QList<QSharedPointer<SteamAppListItem> >)));
 
-    connect(DataTransferer.data(), SIGNAL(CopyFinished()), LeftDirectorySelector.data(), SLOT(Refresh()));
-    connect(DataTransferer.data(), SIGNAL(CopyFinished()), RightDirectorySelector.data(), SLOT(Refresh()));
+    connect(DataTransferer.data(), SIGNAL(TransferComplete()), LeftDirectorySelector.data(), SLOT(Refresh()));
+    connect(DataTransferer.data(), SIGNAL(TransferComplete()), RightDirectorySelector.data(), SLOT(Refresh()));
 
     connect(DataTransferer.data(), SIGNAL(ErrorsDuringTransfer(QList<AppTransferError>)), Error.data(), SLOT(Show(QList<AppTransferError>)));
     connect(Error.data(), SIGNAL(RetryTransfer(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(RetryPreviousTransfer(QList<QSharedPointer<SteamAppListItem> >)));
 
-    connect(DataTransferer.data(), SIGNAL(CopyStarted(int)), Progress.data(), SLOT(show()));
-    connect(DataTransferer.data(), SIGNAL(CopyFinished()), Progress.data(), SLOT(hide()));
+    connect(DataTransferer.data(), SIGNAL(TransferBeginning(int)), Progress.data(), SLOT(Show(int)));
+    connect(DataTransferer.data(), SIGNAL(TransferComplete()), Progress.data(), SLOT(hide()));
+
+    connect(DataTransferer.data(), SIGNAL(SingleTransferStarting()), Progress.data(), SLOT(NewTransferStarted()));
+    connect(DataTransferer.data(), SIGNAL(TransferProgress(QString,int)), Progress.data(), SLOT(UpdateProgress(QString,int)));
 
     DataTransferer->moveToThread(&TransferThread);
-//    connect(&TransferThread, SIGNAL(finished()), DataTransferer.data(), SLOT(deleteLater()));
     TransferThread.start();
 }
 
