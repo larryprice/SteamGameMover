@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>277</height>
+    <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>250</y>
+     <y>220</y>
      <width>481</width>
      <height>23</height>
     </rect>
@@ -55,28 +55,10 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>110</y>
+     <y>80</y>
      <width>481</width>
      <height>131</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="detailsBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>80</y>
-     <width>121</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Show Details</string>
    </property>
   </widget>
   <widget class="QPushButton" name="abortButton">

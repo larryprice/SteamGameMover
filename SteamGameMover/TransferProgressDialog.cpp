@@ -29,7 +29,6 @@ void TransferProgressDialog::AbortTransfer()
     {
         ui->transferLabel->setText(QString("Transfer aborted after %1 of %2 apps").arg(CurrentAppNum).arg(TotalNumApps));
         ui->closeAfterTransfer->setChecked(false);
-        ui->detailsBox->setChecked(true);
         emit Abort();
     }
 }
