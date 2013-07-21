@@ -55,7 +55,7 @@ void MainWindow::SetupTransferer()
     connect(Error.data(), SIGNAL(RetryTransfer(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(RetryPreviousTransfer(QList<QSharedPointer<SteamAppListItem> >)));
 
     connect(DataTransferer.data(), SIGNAL(TransferBeginning(int)), Progress.data(), SLOT(Show(int)));
-    connect(DataTransferer.data(), SIGNAL(TransferComplete()), Progress.data(), SLOT(hide()));
+    connect(DataTransferer.data(), SIGNAL(TransferComplete()), Progress.data(), SLOT(Hide()));
 
     connect(DataTransferer.data(), SIGNAL(SingleTransferStarting()), Progress.data(), SLOT(NewTransferStarted()));
     connect(DataTransferer.data(), SIGNAL(TransferProgress(QString,int)), Progress.data(), SLOT(UpdateProgress(QString,int)));

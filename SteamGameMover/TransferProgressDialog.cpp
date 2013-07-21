@@ -9,7 +9,8 @@ TransferProgressDialog::TransferProgressDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TransferProgressDialog),
     TotalNumApps(0),
-    CurrentAppNum(0)
+    CurrentAppNum(0),
+    TransferComplete(false)
 {
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
@@ -26,12 +27,22 @@ void TransferProgressDialog::Show(int numApps)
 {
     TotalNumApps = numApps;
     CurrentAppNum = 0;
+    TransferComplete = false;
 
     UpdateTransferLabel();
     ui->messages->clear();
     UpdateProgress(QString("Transferring %1 apps").arg(TotalNumApps), 0);
 
     show();
+}
+
+void TransferProgressDialog::Hide()
+{
+    TransferComplete = true;
+    if (Qt::Checked == ui->closeAfterTransfer->checkState())
+    {
+        hide();
+    }
 }
 
 void TransferProgressDialog::UpdateTransferLabel()
@@ -53,13 +64,24 @@ void TransferProgressDialog::UpdateProgress(const QString& msg, int percentage)
 
 void TransferProgressDialog::closeEvent(QCloseEvent* e)
 {
-    e->ignore();
+    if (!TransferComplete)
+    {
+        e->ignore();
+    }
+    else
+    {
+        QDialog::closeEvent(e);
+    }
 }
 
 void TransferProgressDialog::keyPressEvent(QKeyEvent* e)
 {
-    if (Qt::Key_Escape == e->key())
+    if (!TransferComplete && Qt::Key_Escape == e->key())
     {
         e->ignore();
+    }
+    else
+    {
+        QDialog::keyPressEvent(e);
     }
 }

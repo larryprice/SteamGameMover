@@ -20,6 +20,7 @@ public slots:
     virtual void keyPressEvent(QKeyEvent* e);
 
     void Show(int numApps);
+    void Hide();
     void NewTransferStarted();
     void UpdateProgress(const QString &msg, int percentage);
 
@@ -33,6 +34,7 @@ private:
     Ui::TransferProgressDialog *ui;
     int TotalNumApps;
     int CurrentAppNum;
+    bool TransferComplete;
 };
 
 #endif // TRANSFER_PROGRESS_DIALOG_H

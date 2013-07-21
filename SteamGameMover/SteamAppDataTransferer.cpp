@@ -144,6 +144,7 @@ QThread::sleep(1);
 
         if (Abort)
         {
+            emit TransferProgress(QString("%1\%... : Transfer aborted").arg(percentComplete), percentComplete);
             Abort = false;
             break;
         }
@@ -184,6 +185,5 @@ bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const Q
 
 void SteamAppDataTransferer::AbortTransfer()
 {
-
     Abort = true;
 }
