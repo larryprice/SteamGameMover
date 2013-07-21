@@ -3,10 +3,12 @@
 
 #include <QMainWindow>
 #include <QScopedPointer>
+#include <QThread>
 
 class SteamAppDirectorySelector;
 class SteamAppDataTransferer;
 class TransferErrorDialog;
+class TransferProgressDialog;
 
 namespace Ui {
     class MainWindow;
@@ -19,6 +21,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void SetupTransferer();
     
 private:
     Ui::MainWindow* Ui;
@@ -26,6 +30,9 @@ private:
     QScopedPointer<SteamAppDirectorySelector> RightDirectorySelector;
     QScopedPointer<SteamAppDataTransferer> DataTransferer;
     QScopedPointer<TransferErrorDialog> Error;
+    QScopedPointer<TransferProgressDialog> Progress;
+
+    QThread TransferThread;
 };
 
 #endif // MAINWINDOW_H

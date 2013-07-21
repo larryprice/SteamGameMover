@@ -19,6 +19,7 @@ public:
     QString GetRightDir() const;
 
 signals:
+    void CopyStarted(int numApps);
     void CopyFinished();
     void ErrorsDuringTransfer(const QList<AppTransferError>&);
 

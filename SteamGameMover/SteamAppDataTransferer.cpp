@@ -51,14 +51,12 @@ void SteamAppDataTransferer::MoveAppsLeftToRight(const QList<QSharedPointer<Stea
 {
     PreviousTransfer = LeftToRight;
     MoveApps(apps, LeftDir, RightDir);
-    emit CopyFinished();
 }
 
 void SteamAppDataTransferer::MoveAppsRightToLeft(const QList<QSharedPointer<SteamAppListItem> >& apps)
 {
     PreviousTransfer = RightToLeft;
     MoveApps(apps, RightDir, LeftDir);
-    emit CopyFinished();
 }
 
 void SteamAppDataTransferer::RetryPreviousTransfer(const QList<QSharedPointer<SteamAppListItem> >& apps)
@@ -72,12 +70,15 @@ void SteamAppDataTransferer::RetryPreviousTransfer(const QList<QSharedPointer<St
         MoveAppsRightToLeft(apps);
     }
 }
-
+#include <QThread>
 void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination)
 {
+    emit CopyStarted(apps.count());
+
     QList<AppTransferError> errors;
     foreach (const QSharedPointer<SteamAppListItem>& app, apps)
     {
+        QThread::sleep(1);
         QString installPath = app->GetInstallDir();
         QDir installDir(installPath);
         if (!installDir.exists())
@@ -131,6 +132,8 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
     {
         emit ErrorsDuringTransfer(errors);
     }
+
+    emit CopyFinished();
 }
 
 bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const QString& sourceBasePath, const QString& destBasePath) const
