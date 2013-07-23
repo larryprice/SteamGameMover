@@ -5,6 +5,7 @@
 #include <QScopedPointer>
 #include <QThread>
 
+class AboutDialog;
 class SteamAppDirectorySelector;
 class SteamAppDataTransferer;
 class TransferErrorDialog;
@@ -34,6 +35,7 @@ private:
     QScopedPointer<SteamAppDataTransferer> DataTransferer;
     QScopedPointer<TransferErrorDialog> Error;
     QScopedPointer<TransferProgressDialog> Progress;
+    QScopedPointer<AboutDialog> About;
 
     QThread TransferThread;
 };

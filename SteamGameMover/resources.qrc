@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/images">
         <file>images/refresh.png</file>
+        <file>images/steamgamemover_16x16.png</file>
+        <file>images/steamgamemover_48x48.png</file>
+        <file>images/steamgamemover_64x64.png</file>
+        <file>images/steamgamemover_128x128.png</file>
+        <file>images/steamgamemover_256x256.png</file>
     </qresource>
 </RCC>
