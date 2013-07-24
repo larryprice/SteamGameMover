@@ -2,7 +2,7 @@ SteamGameMover
 ==============
 
 Author: Larry Price ([larryprice.github.com](http://larryprice.github.io))  
-Contact: larry.price.dev@gmail.com  
+Contact: steam.game.mover@gmail.com  
 Repository Location: https://github.com/larryprice/SteamGameMover
 
 ##Description
