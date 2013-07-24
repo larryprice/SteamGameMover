@@ -14,7 +14,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Transfer Errors</string>
+   <string>SteamGameMover</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/images/steamgamemover_256x256.png</normaloff>:/images/images/steamgamemover_256x256.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -62,7 +66,9 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

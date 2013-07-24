@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>AboutDialog</class>
  <widget class="QDialog" name="AboutDialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,11 +14,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About</string>
+   <string>SteamGameMover</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/images/images/steamgamemover_16x16.png</normaloff>:/images/images/steamgamemover_16x16.png</iconset>
+    <normaloff>:/images/images/steamgamemover_256x256.png</normaloff>:/images/images/steamgamemover_256x256.png</iconset>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">

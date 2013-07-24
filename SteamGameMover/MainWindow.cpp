@@ -13,9 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
     LeftDirectorySelector(),
     RightDirectorySelector(),
     DataTransferer(new SteamAppDataTransferer()),
-    Error(new TransferErrorDialog(parent)),
-    Progress(new TransferProgressDialog(parent)),
-    About(new AboutDialog(parent)),
+    Error(new TransferErrorDialog(this)),
+    Progress(new TransferProgressDialog(this)),
+    About(new AboutDialog(this)),
     TransferThread()
 {
     Ui->setupUi(this);
