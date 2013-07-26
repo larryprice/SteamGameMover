@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     TransferErrorDialog.cpp \
     AppTransferError.cpp \
     TransferProgressDialog.cpp \
-    AboutDialog.cpp
+    AboutDialog.cpp \
+    HelpDialog.cpp
 
 HEADERS  += MainWindow.h \
     SteamAppListModel.h \
@@ -33,12 +34,14 @@ HEADERS  += MainWindow.h \
     TransferErrorDialog.h \
     AppTransferError.h \
     TransferProgressDialog.h \
-    AboutDialog.h
+    AboutDialog.h \
+    HelpDialog.h
 
 FORMS    += MainWindow.ui \
     TransferErrorDialog.ui \
     TransferProgressDialog.ui \
-    AboutDialog.ui
+    AboutDialog.ui \
+    HelpDialog.ui
 
 RESOURCES += \
     resources.qrc
