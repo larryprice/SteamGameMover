@@ -93,20 +93,26 @@
      <height>381</height>
     </rect>
    </property>
+   <property name="tabPosition">
+    <enum>QTabWidget::North</enum>
+   </property>
+   <property name="tabShape">
+    <enum>QTabWidget::Rounded</enum>
+   </property>
    <property name="currentIndex">
     <number>0</number>
    </property>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="oneTab">
     <attribute name="title">
      <string>Move One Game</string>
     </attribute>
    </widget>
-   <widget class="QWidget" name="tab_3">
+   <widget class="QWidget" name="someTab">
     <attribute name="title">
-     <string>Move Several Games</string>
+     <string>Move Some Games</string>
     </attribute>
    </widget>
-   <widget class="QWidget" name="tab_2">
+   <widget class="QWidget" name="allTab">
     <attribute name="title">
      <string>Move All Games</string>
     </attribute>
