@@ -36,25 +36,6 @@
     <number>0</number>
    </property>
   </widget>
-  <widget class="QLabel" name="transferLabel">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>371</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-     <italic>true</italic>
-    </font>
-   </property>
-   <property name="text">
-    <string>Transferring</string>
-   </property>
-  </widget>
   <widget class="QTextBrowser" name="messages">
    <property name="geometry">
     <rect>
@@ -63,19 +44,6 @@
      <width>481</width>
      <height>131</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="abortButton">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>6</y>
-     <width>99</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Abort</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="closeAfterTransfer">
@@ -93,6 +61,51 @@
    <property name="checked">
     <bool>true</bool>
    </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>501</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="transferLabel">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <italic>true</italic>
+       </font>
+      </property>
+      <property name="text">
+       <string>Transferring</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QPushButton" name="abortButton">
+      <property name="text">
+       <string>Abort</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources>
