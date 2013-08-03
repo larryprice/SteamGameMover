@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 
 #include "AboutDialog.h"
+#include "HelpDialog.h"
 #include "SteamAppDirectorySelector.h"
 #include "SteamAppDataTransferer.h"
 #include "TransferErrorDialog.h"
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Error(new TransferErrorDialog(this)),
     Progress(new TransferProgressDialog(this)),
     About(new AboutDialog(this)),
+    Help(new HelpDialog(this)),
     TransferThread()
 {
     Ui->setupUi(this);
@@ -40,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(Ui->MoveAllLeftBtn, SIGNAL(clicked()), RightDirectorySelector.data(), SLOT(MoveAllApps()));
 
     connect(Ui->actionAbout, SIGNAL(triggered()), About.data(), SLOT(show()));
+    connect(Ui->actionHelp, SIGNAL(triggered()), Help.data(), SLOT(show()));
 
     SetupTransferer();
 }

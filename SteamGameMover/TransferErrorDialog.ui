@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SteamGameMover</string>
+   <string>SteamGameMover - Errors!</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
