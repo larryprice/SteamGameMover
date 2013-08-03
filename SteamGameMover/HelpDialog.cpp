@@ -12,3 +12,12 @@ HelpDialog::~HelpDialog()
 {
     delete ui;
 }
+
+void HelpDialog::resizeEvent(QResizeEvent *)
+{
+    QSize tabSize = ui->tabWidget->currentWidget()->size();
+
+    ui->moveOneGameInstructions->resize(tabSize);
+    ui->moveSomeGamesInstructions->resize(tabSize);
+    ui->moveAllGamesInstructions->resize(tabSize);
+}

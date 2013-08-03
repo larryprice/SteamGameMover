@@ -16,6 +16,8 @@ public:
     ~HelpDialog();
     
 private:
+    virtual void resizeEvent(QResizeEvent *);
+
     Ui::HelpDialog *ui;
 };
 

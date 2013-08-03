@@ -37,7 +37,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Hey there! Welcome to SteamGameMover.</string>
+      <string>Hey there. Welcome to SteamGameMover.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -76,13 +76,13 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="oneTab">
       <attribute name="title">
        <string>Move One Game</string>
       </attribute>
-      <widget class="QTextBrowser" name="textBrowser">
+      <widget class="QTextBrowser" name="moveOneGameInstructions">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -116,7 +116,7 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>Move Some Games</string>
       </attribute>
-      <widget class="QTextBrowser" name="textBrowser_2">
+      <widget class="QTextBrowser" name="moveSomeGamesInstructions">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -144,7 +144,7 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>Move All Games</string>
       </attribute>
-      <widget class="QTextBrowser" name="textBrowser_3">
+      <widget class="QTextBrowser" name="moveAllGamesInstructions">
        <property name="geometry">
         <rect>
          <x>0</x>

@@ -14,6 +14,7 @@ SteamAppDataTransferer::SteamAppDataTransferer(QObject *parent)
       PreviousTransfer(None),
       Abort(false)
 {
+    qRegisterMetaType<QList<AppTransferError> >("QList<AppTransferError>");
 }
 
 SteamAppDataTransferer::SteamAppDataTransferer(const SteamAppDataTransferer& rhs)
