@@ -14,15 +14,8 @@ class HelpDialog : public QDialog
 public:
     explicit HelpDialog(QWidget *parent = 0);
     ~HelpDialog();
-
-private slots:
-    void ShowOneGameInstructions();
-    void ShowSomeGamesInstructions();
-    void ShowAllGamesInstructions();
     
 private:
-    void SwitchInstructions(QWidget* textToShow);
-
     Ui::HelpDialog *ui;
 };
 
