@@ -6,6 +6,7 @@
 #include <QDirIterator>
 #include <QScopedPointer>
 #include <QSharedPointer>
+#include <QThread>
 
 SteamAppDataTransferer::SteamAppDataTransferer(QObject *parent)
     : QObject(parent),
@@ -73,11 +74,12 @@ void SteamAppDataTransferer::RetryPreviousTransfer(const QList<QSharedPointer<St
         MoveAppsRightToLeft(apps);
     }
 }
-#include <QThread>
+
 void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination)
 {
     Abort = false;
     emit TransferBeginning(apps.count());
+    QThread::sleep(1);
 
     int percentComplete = 0;
     quint16 appNum = 0;
@@ -87,7 +89,7 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
     {
         emit SingleTransferStarting();
         emit TransferProgress(QString("%1\%... %2: Beginning transfer").arg(percentComplete).arg(app->GetName()), percentComplete);
-QThread::sleep(1);
+
         QString installPath = app->GetInstallDir();
         QDir installDir(installPath);
         if (!installDir.exists())
@@ -153,6 +155,7 @@ QThread::sleep(1);
 
     if (!errors.empty())
     {
+        emit TransferProgress(QString("Errors during transfer"), percentComplete);
         emit ErrorsDuringTransfer(errors);
     }
 

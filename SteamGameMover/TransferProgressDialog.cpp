@@ -41,7 +41,7 @@ void TransferProgressDialog::Show(int numApps)
 
     UpdateTransferLabel();
     ui->messages->clear();
-    UpdateProgress(QString("Transferring %1 apps").arg(TotalNumApps), 0);
+    UpdateProgress(QString("Preparing to transfer %1 games").arg(TotalNumApps), 0);
 
     show();
 }
