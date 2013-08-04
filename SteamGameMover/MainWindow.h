@@ -1,16 +1,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "AboutDialog.h"
+#include "HelpDialog.h"
+#include "SteamAppDataTransferer.h"
+#include "TransferProgressDialog.h"
+#include "TransferErrorDialog.h"
+
 #include <QMainWindow>
 #include <QScopedPointer>
 #include <QThread>
 
-class AboutDialog;
-class HelpDialog;
 class SteamAppDirectorySelector;
-class SteamAppDataTransferer;
-class TransferErrorDialog;
-class TransferProgressDialog;
 
 namespace Ui {
     class MainWindow;
@@ -33,11 +34,11 @@ private:
     Ui::MainWindow* Ui;
     QScopedPointer<SteamAppDirectorySelector> LeftDirectorySelector;
     QScopedPointer<SteamAppDirectorySelector> RightDirectorySelector;
-    QScopedPointer<SteamAppDataTransferer> DataTransferer;
-    QScopedPointer<TransferErrorDialog> Error;
-    QScopedPointer<TransferProgressDialog> Progress;
-    QScopedPointer<AboutDialog> About;
-    QScopedPointer<HelpDialog> Help;
+    SteamAppDataTransferer DataTransferer;
+    TransferErrorDialog Error;
+    TransferProgressDialog Progress;
+    AboutDialog About;
+    HelpDialog Help;
 
     QThread TransferThread;
 };

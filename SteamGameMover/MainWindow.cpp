@@ -1,23 +1,18 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include "AboutDialog.h"
-#include "HelpDialog.h"
 #include "SteamAppDirectorySelector.h"
-#include "SteamAppDataTransferer.h"
-#include "TransferErrorDialog.h"
-#include "TransferProgressDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     Ui(new Ui::MainWindow),
     LeftDirectorySelector(),
     RightDirectorySelector(),
-    DataTransferer(new SteamAppDataTransferer()),
-    Error(new TransferErrorDialog(this)),
-    Progress(new TransferProgressDialog(this)),
-    About(new AboutDialog(this)),
-    Help(new HelpDialog(this)),
+    DataTransferer(),
+    Error(this),
+    Progress(this),
+    About(this),
+    Help(this),
     TransferThread()
 {
     Ui->setupUi(this);
@@ -41,41 +36,41 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(Ui->MoveAllRightBtn, SIGNAL(clicked()), LeftDirectorySelector.data(), SLOT(MoveAllApps()));
     connect(Ui->MoveAllLeftBtn, SIGNAL(clicked()), RightDirectorySelector.data(), SLOT(MoveAllApps()));
 
-    connect(Ui->actionAbout, SIGNAL(triggered()), About.data(), SLOT(show()));
-    connect(Ui->actionHelp, SIGNAL(triggered()), Help.data(), SLOT(show()));
+    connect(Ui->actionAbout, SIGNAL(triggered()), &About, SLOT(show()));
+    connect(Ui->actionHelp, SIGNAL(triggered()), &Help, SLOT(show()));
 
     SetupTransferer();
 }
 
 void MainWindow::SetupTransferer()
 {
-    connect(LeftDirectorySelector.data(), SIGNAL(AppDirChanged(QString)), DataTransferer.data(), SLOT(SetLeftDir(QString)));
-    connect(RightDirectorySelector.data(), SIGNAL(AppDirChanged(QString)), DataTransferer.data(), SLOT(SetRightDir(QString)));
+    connect(LeftDirectorySelector.data(), SIGNAL(AppDirChanged(QString)), &DataTransferer, SLOT(SetLeftDir(QString)));
+    connect(RightDirectorySelector.data(), SIGNAL(AppDirChanged(QString)), &DataTransferer, SLOT(SetRightDir(QString)));
 
-    connect(LeftDirectorySelector.data(), SIGNAL(MoveApps(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(MoveAppsLeftToRight(QList<QSharedPointer<SteamAppListItem> >)));
-    connect(RightDirectorySelector.data(), SIGNAL(MoveApps(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(MoveAppsRightToLeft(QList<QSharedPointer<SteamAppListItem> >)));
+    connect(LeftDirectorySelector.data(), SIGNAL(MoveApps(QList<QSharedPointer<SteamAppListItem> >)), &DataTransferer, SLOT(MoveAppsLeftToRight(QList<QSharedPointer<SteamAppListItem> >)));
+    connect(RightDirectorySelector.data(), SIGNAL(MoveApps(QList<QSharedPointer<SteamAppListItem> >)), &DataTransferer, SLOT(MoveAppsRightToLeft(QList<QSharedPointer<SteamAppListItem> >)));
 
-    connect(DataTransferer.data(), SIGNAL(TransferComplete()), LeftDirectorySelector.data(), SLOT(Refresh()));
-    connect(DataTransferer.data(), SIGNAL(TransferComplete()), RightDirectorySelector.data(), SLOT(Refresh()));
+    connect(&DataTransferer, SIGNAL(TransferComplete()), LeftDirectorySelector.data(), SLOT(Refresh()));
+    connect(&DataTransferer, SIGNAL(TransferComplete()), RightDirectorySelector.data(), SLOT(Refresh()));
 
-    connect(DataTransferer.data(), SIGNAL(ErrorsDuringTransfer(QList<AppTransferError>)), Error.data(), SLOT(Show(QList<AppTransferError>)));
-    connect(Error.data(), SIGNAL(RetryTransfer(QList<QSharedPointer<SteamAppListItem> >)), DataTransferer.data(), SLOT(RetryPreviousTransfer(QList<QSharedPointer<SteamAppListItem> >)));
+    connect(&DataTransferer, SIGNAL(ErrorsDuringTransfer(QList<AppTransferError>)), &Error, SLOT(Show(QList<AppTransferError>)));
+    connect(&Error, SIGNAL(RetryTransfer(QList<QSharedPointer<SteamAppListItem> >)), &DataTransferer, SLOT(RetryPreviousTransfer(QList<QSharedPointer<SteamAppListItem> >)));
 
-    connect(DataTransferer.data(), SIGNAL(TransferBeginning(int)), Progress.data(), SLOT(Show(int)));
-    connect(DataTransferer.data(), SIGNAL(TransferComplete()), Progress.data(), SLOT(Hide()));
+    connect(&DataTransferer, SIGNAL(TransferBeginning(int)), &Progress, SLOT(Show(int)));
+    connect(&DataTransferer, SIGNAL(TransferComplete()), &Progress, SLOT(Hide()));
 
-    connect(DataTransferer.data(), SIGNAL(SingleTransferStarting()), Progress.data(), SLOT(NewTransferStarted()));
-    connect(DataTransferer.data(), SIGNAL(TransferProgress(QString,int)), Progress.data(), SLOT(UpdateProgress(QString,int)));
+    connect(&DataTransferer, SIGNAL(SingleTransferStarting()), &Progress, SLOT(NewTransferStarted()));
+    connect(&DataTransferer, SIGNAL(TransferProgress(QString,int)), &Progress, SLOT(UpdateProgress(QString,int)));
 
-    connect(Progress.data(), SIGNAL(Abort()), this, SLOT(AbortTransfer()));
+    connect(&Progress, SIGNAL(Abort()), this, SLOT(AbortTransfer()));
 
-    DataTransferer->moveToThread(&TransferThread);
+    DataTransferer.moveToThread(&TransferThread);
     TransferThread.start();
 }
 
 void MainWindow::AbortTransfer()
 {
-    DataTransferer->AbortTransfer();
+    DataTransferer.AbortTransfer();
 }
 
 MainWindow::~MainWindow()
