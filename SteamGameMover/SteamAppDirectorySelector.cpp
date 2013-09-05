@@ -24,7 +24,6 @@ namespace
 #endif
 }
 
-
 SteamAppDirectorySelector::SteamAppDirectorySelector(QLineEdit* text, QListView* list, QWidget* parent)
     : Parent(parent),
       AppDir(text),
@@ -33,7 +32,7 @@ SteamAppDirectorySelector::SteamAppDirectorySelector(QLineEdit* text, QListView*
     qRegisterMetaType<QList<QSharedPointer<SteamAppListItem> > >("QList<QSharedPointer<SteamAppListItem> >");
 
     AppDir->setText(DEFAULT_DIRECTORY);
-    Refresh();
+    ListView->setModel(new SteamAppListModel(GetGameList(), Parent));
 }
 
 SteamAppDirectorySelector::~SteamAppDirectorySelector()

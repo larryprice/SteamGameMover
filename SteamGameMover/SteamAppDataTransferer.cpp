@@ -4,7 +4,6 @@
 #include "AppTransferError.h"
 
 #include <QDirIterator>
-#include <QScopedPointer>
 #include <QSharedPointer>
 #include <QThread>
 

@@ -5,8 +5,6 @@ AboutDialog::AboutDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AboutDialog)
 {
-    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-
     ui->setupUi(this);
 }
 

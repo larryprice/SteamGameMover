@@ -66,6 +66,9 @@ void MainWindow::SetupTransferer()
 
     DataTransferer.moveToThread(&TransferThread);
     TransferThread.start();
+
+    LeftDirectorySelector->Refresh();
+    RightDirectorySelector->Refresh();
 }
 
 void MainWindow::AbortTransfer()

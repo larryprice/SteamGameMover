@@ -27,6 +27,7 @@ public slots:
 
 signals:
     void Abort();
+    void ReadyForTransfer();
 
 private:
     void UpdateTransferLabel();
