@@ -12,7 +12,8 @@ SteamAppDataTransferer::SteamAppDataTransferer(QObject *parent)
       LeftDir(),
       RightDir(),
       PreviousTransfer(None),
-      Abort(false)
+      Abort(false),
+      PercentComplete(0.0)
 {
     qRegisterMetaType<QList<AppTransferError> >("QList<AppTransferError>");
 }
@@ -22,7 +23,8 @@ SteamAppDataTransferer::SteamAppDataTransferer(const SteamAppDataTransferer& rhs
       LeftDir(rhs.LeftDir),
       RightDir(rhs.RightDir),
       PreviousTransfer(rhs.PreviousTransfer),
-      Abort(false)
+      Abort(false),
+      PercentComplete(0.0)
 {
 }
 
@@ -74,20 +76,31 @@ void SteamAppDataTransferer::RetryPreviousTransfer(const QList<QSharedPointer<St
     }
 }
 
+void SteamAppDataTransferer::UpdateProgress(float amount, const QString& message)
+{
+    PercentComplete += amount;
+    if (100.0 < PercentComplete)
+    {
+        PercentComplete = 100.0;
+    }
+
+    emit TransferProgress(QString("%1\%... %2").arg(QString::number(PercentComplete, 'f', 2)).arg(message), PercentComplete);
+}
+
 void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListItem> >& apps, const QString& source, const QString &destination)
 {
     Abort = false;
+    PercentComplete = 0.0;
     emit TransferBeginning(apps.count());
-    QThread::sleep(1);
 
-    int percentComplete = 0;
     quint16 appNum = 0;
     quint16 numApps = apps.count();
+    float share = 100.0 / numApps;
     QList<AppTransferError> errors;
     foreach (const QSharedPointer<SteamAppListItem>& app, apps)
     {
         emit SingleTransferStarting();
-        emit TransferProgress(QString("%1\%... %2: Beginning transfer").arg(percentComplete).arg(app->GetName()), percentComplete);
+        UpdateProgress(0, QString("%1: Beginning transfer").arg(app->GetName()));
 
         QString installPath = app->GetInstallDir();
         QDir installDir(installPath);
@@ -104,13 +117,13 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             }
         }
 
-        if (!CopyFilesRecursively(installDir, source, destination))
+        if (!CopyFilesRecursively(installDir, source, destination, share))
         {
             errors << AppTransferError(app, "Copy failed");
             continue;
         }
 
-        emit TransferProgress(QString("%1\%... %2: Copying manifest file").arg(percentComplete).arg(app->GetName()), percentComplete);
+        UpdateProgress(0, QString("%1: Copying manifest file").arg(app->GetName()));
         QString newAppFilePath = app->GetManifestFilePath().replace(source, destination);
         if (!QFile::copy(app->GetManifestFilePath(), newAppFilePath))
         {
@@ -118,7 +131,7 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             continue;
         }
 
-        emit TransferProgress(QString("%1\%... %2: Editing manifest file").arg(percentComplete).arg(app->GetName()), percentComplete);
+        UpdateProgress(0, QString("%1: Editing manifest file").arg(app->GetName()));
         SteamAppManifestParser parser(newAppFilePath);
         if (!parser.SetInstallDir(installPath.replace(source, destination)))
         {
@@ -126,14 +139,14 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             continue;
         }
 
-        emit TransferProgress(QString("%1\%... %2: Deleting old install files").arg(percentComplete).arg(app->GetName()), percentComplete);
+        UpdateProgress(0, QString("%1: Deleting old install files").arg(app->GetName()));
         if (!installDir.removeRecursively())
         {
             errors << AppTransferError(app, "Removal of old files failed");
             continue;
         }
 
-        emit TransferProgress(QString("%1\%... %2: Deleting old manifest file").arg(percentComplete).arg(app->GetName()), percentComplete);
+        UpdateProgress(0, QString("%1: Deleting old manifest file").arg(app->GetName()));
         QFile appManifest(app->GetManifestFilePath());
         if (!appManifest.remove())
         {
@@ -141,12 +154,12 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
             continue;
         }
 
-        percentComplete = (++appNum * 100) / numApps;
-        emit TransferProgress(QString("%1\%... %2: Transfer complete").arg(percentComplete).arg(app->GetName()), percentComplete);
+        PercentComplete = (++appNum * 100) / numApps;
+        UpdateProgress(0, QString("%1: Transfer complete").arg(app->GetName()));
 
         if (Abort)
         {
-            emit TransferProgress(QString("%1\%... : Transfer aborted").arg(percentComplete), percentComplete);
+            UpdateProgress(0, QString("Transfer aborted!"));
             Abort = false;
             break;
         }
@@ -154,16 +167,30 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
 
     if (!errors.empty())
     {
-        emit TransferProgress(QString("Errors during transfer"), percentComplete);
+        UpdateProgress(0, QString("Errors during transfer."));
         emit ErrorsDuringTransfer(errors);
     }
 
     emit TransferComplete();
 }
 
-bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const QString& sourceBasePath, const QString& destBasePath) const
+bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const QString& sourceBasePath, const QString& destBasePath, float share)
 {
     bool success = true;
+    quint64 numTotal = 0;
+
+    QDirIterator iterator1(sourceDir.absolutePath(), QDirIterator::Subdirectories);
+    while (iterator1.hasNext())
+    {
+        iterator1.next();
+        if (!iterator1.fileInfo().isDir())
+        {
+            numTotal++;
+        }
+    }
+
+    int numCopied = 0;
+    float sharePerFile = share / numTotal;
 
     QDirIterator iterator(sourceDir.absolutePath(), QDirIterator::Subdirectories);
     while (iterator.hasNext())
@@ -180,6 +207,13 @@ bool SteamAppDataTransferer::CopyFilesRecursively(const QDir& sourceDir, const Q
                 success = false;
                 break;
             }
+
+            UpdateProgress(sharePerFile, QString("Copied %1 of %2 files").arg(++numCopied).arg(numTotal));
+        }
+
+        if (Abort)
+        {
+            break;
         }
     }
 

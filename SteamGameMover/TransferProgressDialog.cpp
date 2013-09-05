@@ -40,6 +40,7 @@ void TransferProgressDialog::Show(int numApps)
 
     UpdateTransferLabel();
     ui->messages->clear();
+    ui->abortButton->setEnabled(true);
     UpdateProgress(QString("Preparing to transfer %1 games").arg(TotalNumApps), 0);
 
     show();
@@ -48,11 +49,15 @@ void TransferProgressDialog::Show(int numApps)
 void TransferProgressDialog::Hide()
 {
     TransferComplete = true;
-    ui->transferLabel->setText(QString("Transferred %1 games").arg(TotalNumApps));
 
     if (Qt::Checked == ui->closeAfterTransfer->checkState())
     {
         hide();
+    }
+    else
+    {
+        ui->transferLabel->setText(QString("Transferred %1 games").arg(TotalNumApps));
+        ui->abortButton->setEnabled(false);
     }
 }
 

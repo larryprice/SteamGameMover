@@ -35,8 +35,9 @@ public slots:
     void RetryPreviousTransfer(const QList<QSharedPointer<SteamAppListItem> >& apps);
 
 private:
-    bool CopyFilesRecursively(const QDir &sourceDir, const QString &sourceBasePath, const QString &destBasePath) const;
+    bool CopyFilesRecursively(const QDir &sourceDir, const QString &sourceBasePath, const QString &destBasePath, float share);
     void MoveApps(const QList<QSharedPointer<SteamAppListItem> > &apps, const QString &source, const QString& destination);
+    void UpdateProgress(float amount, const QString& message);
 
     enum TransferDirection
     {
@@ -49,6 +50,7 @@ private:
     QString RightDir;
     TransferDirection PreviousTransfer;
     bool Abort;
+    float PercentComplete;
 };
 
 #endif // STEAM_APP_DATA_TRANSFERER_H
