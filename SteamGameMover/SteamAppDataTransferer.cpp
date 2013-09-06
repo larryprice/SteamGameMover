@@ -34,7 +34,7 @@ SteamAppDataTransferer::~SteamAppDataTransferer()
 
 void SteamAppDataTransferer::SetLeftDir(const QString& dirName)
 {
-    LeftDir = dirName;
+    LeftDir = EvaluateLinks(dirName);
 }
 
 QString SteamAppDataTransferer::GetLeftDir() const
@@ -44,12 +44,17 @@ QString SteamAppDataTransferer::GetLeftDir() const
 
 void SteamAppDataTransferer::SetRightDir(const QString& dirName)
 {
-    RightDir = dirName;
+    RightDir = EvaluateLinks(dirName);
 }
 
 QString SteamAppDataTransferer::GetRightDir() const
 {
     return RightDir;
+}
+
+QString SteamAppDataTransferer::EvaluateLinks(const QString& file) const
+{
+    return QDir(file).canonicalPath();
 }
 
 void SteamAppDataTransferer::MoveAppsLeftToRight(const QList<QSharedPointer<SteamAppListItem> >& apps)
@@ -102,19 +107,11 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
         emit SingleTransferStarting();
         UpdateProgress(0, QString("%1: Beginning transfer").arg(app->GetName()));
 
-        QString installPath = app->GetInstallDir();
-        QDir installDir(installPath);
+        QDir installDir(app->GetInstallDir());
         if (!installDir.exists())
         {
-            // sometimes on Linux, Steam puts "steamapps" as the appinstalldir even though it should be "SteamApps"
-            installPath.replace("steamapps", "SteamApps");
-            installDir.setPath(installPath);
-
-            if (!installDir.exists())
-            {
-                errors << AppTransferError(app, "Could not find install directory");
-                continue;
-            }
+            errors << AppTransferError(app, "Could not find install directory");
+            continue;
         }
 
         if (!CopyFilesRecursively(installDir, source, destination, share))
@@ -133,7 +130,7 @@ void SteamAppDataTransferer::MoveApps(const QList<QSharedPointer<SteamAppListIte
 
         UpdateProgress(0, QString("%1: Editing manifest file").arg(app->GetName()));
         SteamAppManifestParser parser(newAppFilePath);
-        if (!parser.SetInstallDir(installPath.replace(source, destination)))
+        if (!parser.SetInstallDir(installDir.path().replace(source, destination)))
         {
             errors << AppTransferError(app, "Edit of manifest failed");
             continue;

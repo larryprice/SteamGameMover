@@ -70,7 +70,7 @@ QList<QSharedPointer<SteamAppListItem> > SteamAppDirectorySelector::GetGameList(
         QDir appDir(AppDir->text());
         foreach(const QString& appName, appDir.entryList(QStringList("appmanifest_*.acf")))
         {
-            gameList << QSharedPointer<SteamAppListItem>(new SteamAppListItem(QString("%1/%2").arg(appDir.absolutePath()).arg(appName)));
+            gameList << QSharedPointer<SteamAppListItem>(new SteamAppListItem(QString("%1/%2").arg(appDir.canonicalPath()).arg(appName)));
         }
     }
     return gameList;

@@ -1,4 +1,5 @@
 #include "SteamAppManifestParser.h"
+#include <QDir>
 #include <QFile>
 #include <QStringList>
 #include <QTextStream>
@@ -45,6 +46,16 @@ QString SteamAppManifestParser::GetInstallDir()
     if (InstallDir.isNull())
     {
         InstallDir = FindField("appinstalldir");
+        if (!QDir(InstallDir).exists())
+        {
+            InstallDir.replace("steamapps", "SteamApps");
+            if (!QDir(InstallDir).exists())
+            {
+                InstallDir = QString("%1/common/%2")
+                        .arg(QFileInfo(AppManifestFilePath).absolutePath())
+                        .arg(FindField("installdir"));
+            }
+        }
     }
 
     return InstallDir;

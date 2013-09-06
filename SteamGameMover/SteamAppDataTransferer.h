@@ -38,6 +38,7 @@ private:
     bool CopyFilesRecursively(const QDir &sourceDir, const QString &sourceBasePath, const QString &destBasePath, float share);
     void MoveApps(const QList<QSharedPointer<SteamAppListItem> > &apps, const QString &source, const QString& destination);
     void UpdateProgress(float amount, const QString& message);
+    QString EvaluateLinks(const QString& file) const;
 
     enum TransferDirection
     {
