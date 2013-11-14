@@ -4,10 +4,7 @@ QT += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-install_it.path = $${OUT_PWD}
-install_it.files += TestData/
-
-INSTALLS += install_it
+QMAKE_POST_LINK += $$quote(cp -rf $${PWD}/TestData $${OUT_PWD})
 
 SOURCES += \
     SteamAppManifestParserTest.cpp \
