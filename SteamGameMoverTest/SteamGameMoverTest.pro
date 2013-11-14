@@ -4,7 +4,9 @@ QT += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QMAKE_POST_LINK += $$quote(cp -rf $${PWD}/TestData $${OUT_PWD})
+unix {
+    QMAKE_POST_LINK += $$quote(cp -rf $${PWD}/TestData $${OUT_PWD})
+}
 
 SOURCES += \
     SteamAppManifestParserTest.cpp \
