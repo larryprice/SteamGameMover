@@ -73,8 +73,10 @@ SteamAppDataTransferer SteamAppDataTransfererTest::CreateTransfererForMovingApps
     transferer.SetRightDir(TEST_RIGHTDIR);
     QDir leftDir(TEST_LEFTDIR);
     leftDir.removeRecursively();
+    leftDir.mkpath(TEST_LEFTDIR);
     QDir rightDir(TEST_RIGHTDIR);
     rightDir.removeRecursively();
+    leftDir.mkpath(TEST_RIGHTDIR);
 
     return transferer;
 }
@@ -82,7 +84,7 @@ SteamAppDataTransferer SteamAppDataTransfererTest::CreateTransfererForMovingApps
 void SteamAppDataTransfererTest::SetsLeftDir()
 {
     SteamAppDataTransferer transferer;
-    QString testDirName = "test1";
+    QString testDirName = QDir::homePath();
     QVERIFY(testDirName != transferer.GetLeftDir());
 
     transferer.SetLeftDir(testDirName);
@@ -92,7 +94,7 @@ void SteamAppDataTransfererTest::SetsLeftDir()
 void SteamAppDataTransfererTest::SetsRightDir()
 {
     SteamAppDataTransferer transferer;
-    QString testDirName = "test1";
+    QString testDirName = QDir::homePath();
     QVERIFY(testDirName != transferer.GetRightDir());
 
     transferer.SetRightDir(testDirName);
@@ -104,7 +106,7 @@ void SteamAppDataTransfererTest::MoveAppsLeftToRightDoesNothingWhenAppsListIsEmp
     SteamAppDataTransferer transferer = CreateTransfererForMovingApps();
     QVERIFY2(CopyTestDataTo(TEST_LEFTDIR), "Copying TestData failed");
 
-    QSignalSpy signalSpy(&transferer, SIGNAL(CopyFinished()));
+    QSignalSpy signalSpy(&transferer, SIGNAL(TransferComplete()));
     QVERIFY(signalSpy.isValid());
     QList<QSharedPointer<SteamAppListItem> > apps;
     transferer.MoveAppsLeftToRight(apps);
@@ -122,7 +124,7 @@ void SteamAppDataTransfererTest::MoveAppsLeftToRightMovesAppsInList()
     SteamAppDataTransferer transferer = CreateTransfererForMovingApps();
     QVERIFY2(CopyTestDataTo(TEST_LEFTDIR), "Copying TestData failed");
 
-    QSignalSpy signalSpy(&transferer, SIGNAL(CopyFinished()));
+    QSignalSpy signalSpy(&transferer, SIGNAL(TransferComplete()));
     QVERIFY(signalSpy.isValid());
 
     QDir leftDir(TEST_LEFTDIR);
@@ -149,7 +151,7 @@ void SteamAppDataTransfererTest::MoveAppsRightToLeftDoesNothingWhenAppsListIsEmp
     SteamAppDataTransferer transferer = CreateTransfererForMovingApps();
     QVERIFY2(CopyTestDataTo(TEST_RIGHTDIR), "Copying TestData failed");
 
-    QSignalSpy signalSpy(&transferer, SIGNAL(CopyFinished()));
+    QSignalSpy signalSpy(&transferer, SIGNAL(TransferComplete()));
     QVERIFY(signalSpy.isValid());
     QList<QSharedPointer<SteamAppListItem> > apps;
     transferer.MoveAppsRightToLeft(apps);
@@ -167,7 +169,7 @@ void SteamAppDataTransfererTest::MoveAppsRightToLeftMovesAppsInList()
     SteamAppDataTransferer transferer = CreateTransfererForMovingApps();
     QVERIFY2(CopyTestDataTo(TEST_RIGHTDIR), "Copying TestData failed");
 
-    QSignalSpy signalSpy(&transferer, SIGNAL(CopyFinished()));
+    QSignalSpy signalSpy(&transferer, SIGNAL(TransferComplete()));
     QVERIFY(signalSpy.isValid());
 
     QDir rightDir(TEST_RIGHTDIR);
